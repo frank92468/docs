@@ -12,83 +12,82 @@
     "dark": "/images/logo-dark.svg",
     "light": "/images/logo-light.svg"
   },
-  "topbarCtaButton": {
-    "name": "控制台",
-    "url": "https://seeoneapi.com"
+  "navbar": {
+    "links": [
+      {
+        "label": "控制台",
+        "href": "https://seeoneapi.com"
+      }
+    ]
   },
-  "topbarLinks": [
-    {
-      "name": "定价",
-      "url": "https://seeoneapi.com/pricing"
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "文档",
+        "groups": [
+          {
+            "group": "开始使用",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "authentication",
+              "pricing"
+            ]
+          },
+          {
+            "group": "模型目录",
+            "pages": [
+              "models/overview",
+              "models/claude",
+              "models/gpt"
+            ]
+          },
+          {
+            "group": "图像生成",
+            "pages": [
+              "image-generation/gpt-image-2",
+              "image-generation/parameters",
+              "image-generation/best-practices"
+            ]
+          },
+          {
+            "group": "使用指南",
+            "pages": [
+              "guides/rate-limits",
+              "guides/error-codes",
+              "guides/best-practices",
+              "guides/migration"
+            ]
+          },
+          {
+            "group": "信任与安全",
+            "pages": [
+              "trust/overview",
+              "trust/data-security",
+              "trust/compliance"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API 参考",
+        "groups": [
+          {
+            "group": "API 端点",
+            "pages": [
+              "api-reference/overview",
+              "api-reference/chat-completions",
+              "api-reference/image-generation"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/seeoneapi"
     }
-  ],
-  "anchors": [
-    {
-      "name": "API 状态",
-      "icon": "signal",
-      "url": "https://status.seeoneapi.com"
-    }
-  ],
-  "tabs": [
-    {
-      "name": "API 参考",
-      "url": "api-reference"
-    }
-  ],
-  "navigation": [
-    {
-      "group": "开始使用",
-      "pages": [
-        "introduction",
-        "quickstart",
-        "authentication",
-        "pricing"
-      ]
-    },
-    {
-      "group": "模型目录",
-      "pages": [
-        "models/overview",
-        "models/claude",
-        "models/gpt"
-      ]
-    },
-    {
-      "group": "图像生成",
-      "pages": [
-        "image-generation/gpt-image-2",
-        "image-generation/parameters",
-        "image-generation/best-practices"
-      ]
-    },
-    {
-      "group": "使用指南",
-      "pages": [
-        "guides/rate-limits",
-        "guides/error-codes",
-        "guides/best-practices",
-        "guides/migration"
-      ]
-    },
-    {
-      "group": "信任与安全",
-      "pages": [
-        "trust/overview",
-        "trust/data-security",
-        "trust/compliance"
-      ]
-    },
-    {
-      "group": "API 端点",
-      "pages": [
-        "api-reference/overview",
-        "api-reference/chat-completions",
-        "api-reference/image-generation"
-      ]
-    }
-  ],
-  "footerSocials": {
-    "github": "https://github.com/seeoneapi"
   },
   "seo": {
     "metatags": {
