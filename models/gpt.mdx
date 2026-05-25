@@ -1,0 +1,63 @@
+---
+title: "GPT 系列模型"
+sidebarTitle: "GPT"
+description: "OpenAI GPT 全系列模型接入指南"
+---
+
+## 可用模型
+
+| 模型 ID | 上下文窗口 | 特点 |
+|---------|-----------|------|
+| `gpt-4o` | 128K | 全能多模态，支持图文 |
+| `gpt-4.1` | 1M | 超长上下文，适合代码和指令跟随 |
+| `gpt-4o-mini` | 128K | 轻量版，速度快成本低 |
+| `o3` | 200K | 高级推理模型 |
+| `o4-mini` | 200K | 轻量推理模型 |
+| `gpt-image-2` | — | 图像生成专用，见[图像生成章节](/image-generation/gpt-image-2) |
+
+## 基本调用
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="sk-你的API密钥",
+    base_url="https://api.seeoneapi.com/v1"
+)
+
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[
+        {"role": "user", "content": "用 Python 实现一个快排算法"}
+    ]
+)
+```
+
+## 多模态调用（图片输入）
+
+GPT-4o 支持图片输入，你可以发送图片 URL 或 base64 编码：
+
+```python
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[
+        {
+            "role": "user",
+            "content": [
+                {"type": "text", "text": "这张图片里是什么？"},
+                {
+                    "type": "image_url",
+                    "image_url": {"url": "https://example.com/image.jpg"}
+                }
+            ]
+        }
+    ]
+)
+```
+
+## 使用建议
+
+- **通用任务**：GPT-4o 是最均衡的选择
+- **超长文档**：GPT-4.1 支持 1M 上下文
+- **控制成本**：GPT-4o-mini 适合批量处理
+- **图像生成**：使用 gpt-image-2，详见[图像生成](/image-generation/gpt-image-2)

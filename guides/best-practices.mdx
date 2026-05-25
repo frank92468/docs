@@ -1,0 +1,55 @@
+---
+title: "最佳实践"
+sidebarTitle: "最佳实践"
+description: "高效使用 SeeOneAPI 的实用建议"
+---
+
+## 选择合适的模型
+
+不是所有任务都需要最强的模型。合理选择可以大幅降低成本：
+
+| 任务类型 | 推荐 | 原因 |
+|---------|------|------|
+| 文本分类、提取 | Claude Haiku 3.5 / GPT-4o-mini | 简单任务，轻量模型足够 |
+| 对话、写作、翻译 | Claude Sonnet 4 / GPT-4o | 能力和成本的最佳平衡 |
+| 复杂推理、数学 | Claude Opus 4 / o3 | 需要最强推理能力 |
+| 图像生成 | gpt-image-2 | 目前唯一可用的图像生成模型 |
+
+## 优化 Token 使用
+
+- **精简 System Prompt**：避免冗长的系统提示词，把核心指令写清楚即可
+- **控制输出长度**：通过 `max_tokens` 限制输出长度，避免不必要的 Token 消耗
+- **复用对话上下文**：不要每轮都重复完整的背景信息
+
+## 提高可靠性
+
+- **设置超时**：建议 30 秒（常规请求）到 120 秒（图像生成）
+- **实现重试**：网络波动时自动重试，配合指数退避
+- **优雅降级**：主模型不可用时，自动切换到备选模型
+
+```python
+FALLBACK_MODELS = [
+    "claude-sonnet-4-20250514",
+    "gpt-4o",
+    "claude-haiku-3-5-20241022"
+]
+
+def call_with_fallback(messages):
+    for model in FALLBACK_MODELS:
+        try:
+            return client.chat.completions.create(
+                model=model,
+                messages=messages,
+                timeout=30
+            )
+        except Exception as e:
+            print(f"{model} 失败: {e}，尝试下一个...")
+    raise Exception("所有模型均不可用")
+```
+
+## 安全建议
+
+- 不要在前端代码中暴露 API Key
+- 为不同用途创建独立的 API Key
+- 定期在控制台检查用量是否异常
+- 设置令牌额度上限，防止意外超支

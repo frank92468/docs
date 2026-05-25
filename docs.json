@@ -1,126 +1,101 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mintlify Starter Kit",
+  "name": "SeeOneAPI 文档中心",
+  "theme": "venus",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#2563EB",
+    "light": "#60A5FA",
+    "dark": "#1E40AF"
   },
-  "favicon": "/favicon.svg",
-  "navigation": {
-    "tabs": [
-      {
-        "tab": "Guides",
-        "groups": [
-          {
-            "group": "Getting started",
-            "pages": [
-              "index",
-              "quickstart",
-              "development"
-            ]
-          },
-          {
-            "group": "Customization",
-            "pages": [
-              "essentials/settings",
-              "essentials/navigation"
-            ]
-          },
-          {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/components",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "Agent ready",
-            "pages": [
-              "agent-ready/prompt",
-              "agent-ready/visibility",
-              "agent-ready/contextual",
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API reference",
-        "groups": [
-          {
-            "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          },
-          {
-            "group": "Endpoint examples",
-            "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
-            ]
-          }
-        ]
-      }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
+  "favicon": "/images/favicon.svg",
+  "logo": {
+    "dark": "/images/logo-dark.svg",
+    "light": "/images/logo-light.svg"
+  },
+  "topbarCtaButton": {
+    "name": "控制台",
+    "url": "https://seeoneapi.com"
+  },
+  "topbarLinks": [
+    {
+      "name": "定价",
+      "url": "https://seeoneapi.com/pricing"
+    }
+  ],
+  "anchors": [
+    {
+      "name": "API 状态",
+      "icon": "signal",
+      "url": "https://status.seeoneapi.com"
+    }
+  ],
+  "tabs": [
+    {
+      "name": "API 参考",
+      "url": "api-reference"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "开始使用",
+      "pages": [
+        "introduction",
+        "quickstart",
+        "authentication",
+        "pricing"
+      ]
+    },
+    {
+      "group": "模型目录",
+      "pages": [
+        "models/overview",
+        "models/claude",
+        "models/gpt"
+      ]
+    },
+    {
+      "group": "图像生成",
+      "pages": [
+        "image-generation/gpt-image-2",
+        "image-generation/parameters",
+        "image-generation/best-practices"
+      ]
+    },
+    {
+      "group": "使用指南",
+      "pages": [
+        "guides/rate-limits",
+        "guides/error-codes",
+        "guides/best-practices",
+        "guides/migration"
+      ]
+    },
+    {
+      "group": "信任与安全",
+      "pages": [
+        "trust/overview",
+        "trust/data-security",
+        "trust/compliance"
+      ]
+    },
+    {
+      "group": "API 端点",
+      "pages": [
+        "api-reference/overview",
+        "api-reference/chat-completions",
+        "api-reference/image-generation"
       ]
     }
+  ],
+  "footerSocials": {
+    "github": "https://github.com/seeoneapi"
   },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+  "seo": {
+    "metatags": {
+      "canonical": "https://docs.seeoneapi.com"
     }
   },
-  "contextual": {
-    "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
+  "feedback": {
+    "thumbsRating": true
   }
 }

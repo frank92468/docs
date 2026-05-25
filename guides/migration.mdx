@@ -1,0 +1,66 @@
+---
+title: "迁移指南"
+sidebarTitle: "迁移指南"
+description: "从其他服务迁移到 SeeOneAPI"
+---
+
+## 从 OpenAI 官方迁移
+
+如果你正在使用 OpenAI 官方 API，迁移到 SeeOneAPI 只需修改两行代码。
+
+### Python SDK
+
+```python
+# 修改前（OpenAI 官方）
+client = OpenAI(
+    api_key="sk-xxx"
+)
+
+# 修改后（SeeOneAPI）
+client = OpenAI(
+    api_key="sk-你的SeeOneAPI密钥",
+    base_url="https://api.seeoneapi.com/v1"
+)
+```
+
+### Node.js SDK
+
+```javascript
+// 修改前
+const client = new OpenAI({ apiKey: 'sk-xxx' });
+
+// 修改后
+const client = new OpenAI({
+  apiKey: 'sk-你的SeeOneAPI密钥',
+  baseURL: 'https://api.seeoneapi.com/v1',
+});
+```
+
+### 环境变量方式
+
+很多框架和工具支持通过环境变量配置，这种情况下无需修改任何代码：
+
+```bash
+export OPENAI_API_KEY="sk-你的SeeOneAPI密钥"
+export OPENAI_BASE_URL="https://api.seeoneapi.com/v1"
+```
+
+## 从其他中转站迁移
+
+如果你使用的是其他 API 中转服务，迁移方式完全一样 —— 只需替换 Base URL 和 API Key。
+
+## 兼容性说明
+
+SeeOneAPI 兼容 OpenAI API 格式，以下功能均支持：
+
+- `/v1/chat/completions` — 对话补全
+- `/v1/images/generations` — 图像生成
+- 流式输出（SSE）
+- 多模态输入（图片）
+- Function Calling / Tool Use
+
+## 需要帮助？
+
+迁移过程中遇到问题，可以通过以下方式联系我们：
+- 控制台内提交工单
+- 加入用户交流群

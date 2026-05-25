@@ -1,0 +1,65 @@
+---
+title: "API 概述"
+sidebarTitle: "概述"
+description: "SeeOneAPI 接口规范总览"
+---
+
+## 基本信息
+
+| 项目 | 值 |
+|------|-----|
+| Base URL | `https://api.seeoneapi.com/v1` |
+| 协议 | HTTPS |
+| 认证 | Bearer Token |
+| 格式 | JSON |
+| 编码 | UTF-8 |
+
+## 兼容标准
+
+SeeOneAPI 完全兼容 OpenAI API 格式。所有支持 OpenAI API 的 SDK 和工具都可以直接使用。
+
+## 可用端点
+
+| 端点 | 方法 | 说明 |
+|------|------|------|
+| `/v1/chat/completions` | POST | 对话补全（所有文本模型） |
+| `/v1/images/generations` | POST | 图像生成（gpt-image-2） |
+| `/v1/models` | GET | 查看可用模型列表 |
+
+## 通用请求头
+
+```
+Content-Type: application/json
+Authorization: Bearer sk-你的API密钥
+```
+
+## 通用响应格式
+
+成功响应：
+
+```json
+{
+  "id": "chatcmpl-xxx",
+  "object": "chat.completion",
+  "created": 1716000000,
+  "model": "claude-sonnet-4-20250514",
+  "choices": [...],
+  "usage": {
+    "prompt_tokens": 10,
+    "completion_tokens": 100,
+    "total_tokens": 110
+  }
+}
+```
+
+错误响应：
+
+```json
+{
+  "error": {
+    "message": "错误描述",
+    "type": "error_type",
+    "code": "error_code"
+  }
+}
+```

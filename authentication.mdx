@@ -1,0 +1,69 @@
+---
+title: "认证方式"
+sidebarTitle: "认证"
+description: "API Key 的获取、使用与安全管理"
+---
+
+## Base URL
+
+所有 API 请求使用以下基础地址：
+
+```
+https://api.seeoneapi.com/v1
+```
+
+## 认证方式
+
+SeeOneAPI 使用 Bearer Token 认证。在每个请求的 Header 中携带你的 API Key：
+
+```bash
+Authorization: Bearer sk-你的API密钥
+```
+
+## 获取 API Key
+
+1. 登录 [SeeOneAPI 控制台](https://seeoneapi.com)
+2. 进入「令牌」页面
+3. 点击「创建新令牌」
+4. 设置令牌名称和额度上限
+5. 复制生成的 API Key
+
+<Warning>
+  API Key 只在创建时完整显示一次，请立即保存。如果遗失，需要重新创建。
+</Warning>
+
+## 安全最佳实践
+
+<AccordionGroup>
+  <Accordion title="使用环境变量">
+    不要在代码中硬编码 API Key，使用环境变量管理：
+
+    ```bash
+    export OPENAI_API_KEY="sk-你的API密钥"
+    export OPENAI_BASE_URL="https://api.seeoneapi.com/v1"
+    ```
+  </Accordion>
+
+  <Accordion title="设置额度上限">
+    为每个令牌设置合理的额度上限，防止意外超支。你可以在控制台随时调整上限。
+  </Accordion>
+
+  <Accordion title="定期轮换密钥">
+    建议每 90 天轮换一次 API Key。创建新密钥后，更新你的应用配置，然后删除旧密钥。
+  </Accordion>
+
+  <Accordion title="按用途隔离">
+    为不同项目或环境（开发 / 测试 / 生产）创建独立的 API Key，方便追踪用量和快速止损。
+  </Accordion>
+</AccordionGroup>
+
+## 兼容性
+
+SeeOneAPI 完全兼容 OpenAI SDK，你只需要修改两个参数：
+
+| 参数 | 原始值 | SeeOneAPI |
+|------|--------|-----------|
+| `api_key` | `sk-xxx...` | 控制台创建的令牌 |
+| `base_url` | `https://api.openai.com/v1` | `https://api.seeoneapi.com/v1` |
+
+所有 OpenAI 官方 SDK（Python / Node.js / Go 等）和兼容 OpenAI 格式的第三方工具均可无缝接入。

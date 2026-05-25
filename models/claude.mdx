@@ -1,0 +1,82 @@
+---
+title: "Claude 系列模型"
+sidebarTitle: "Claude"
+description: "Anthropic Claude 全系列模型接入指南"
+---
+
+## 可用模型
+
+| 模型 ID | 上下文窗口 | 特点 |
+|---------|-----------|------|
+| `claude-opus-4-20250514` | 200K | 最强推理，适合复杂任务 |
+| `claude-sonnet-4-20250514` | 200K | 性价比最优，日常首选 |
+| `claude-haiku-3-5-20241022` | 200K | 速度最快，成本最低 |
+
+## 基本调用
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="sk-你的API密钥",
+    base_url="https://api.seeoneapi.com/v1"
+)
+
+response = client.chat.completions.create(
+    model="claude-sonnet-4-20250514",
+    max_tokens=4096,
+    messages=[
+        {"role": "system", "content": "你是一个有帮助的助手"},
+        {"role": "user", "content": "解释一下量子计算的基本原理"}
+    ]
+)
+```
+
+## 支持的功能
+
+<AccordionGroup>
+  <Accordion title="流式输出">
+    设置 `stream=True` 即可获得流式响应：
+
+    ```python
+    stream = client.chat.completions.create(
+        model="claude-sonnet-4-20250514",
+        messages=[{"role": "user", "content": "写一首诗"}],
+        stream=True
+    )
+
+    for chunk in stream:
+        if chunk.choices[0].delta.content:
+            print(chunk.choices[0].delta.content, end="")
+    ```
+  </Accordion>
+
+  <Accordion title="多轮对话">
+    通过 messages 数组传递对话历史：
+
+    ```python
+    messages = [
+        {"role": "user", "content": "我在学 Python"},
+        {"role": "assistant", "content": "很好！Python 是一门很棒的语言..."},
+        {"role": "user", "content": "能推荐一些入门资源吗？"}
+    ]
+    ```
+  </Accordion>
+
+  <Accordion title="System Prompt">
+    使用 system 角色设定助手行为：
+
+    ```python
+    messages = [
+        {"role": "system", "content": "你是一位资深的代码审查专家，请用中文回复"},
+        {"role": "user", "content": "请审查以下代码..."}
+    ]
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## 使用建议
+
+- **日常开发**：优先使用 Claude Sonnet 4，在能力和成本之间取得最佳平衡
+- **轻量任务**：分类、摘要、简单问答用 Claude Haiku 3.5，速度快且省钱
+- **高难度推理**：数学证明、复杂代码架构等用 Claude Opus 4

@@ -1,0 +1,82 @@
+---
+title: "提示词技巧"
+sidebarTitle: "提示词技巧"
+description: "写出更好的图像生成提示词"
+---
+
+## 提示词结构
+
+一个好的提示词通常包含以下要素：
+
+**主体 + 场景 + 风格 + 细节**
+
+```
+一只橘猫（主体）坐在日式庭院的石头上（场景），
+宫崎骏动画风格（风格），阳光透过樱花树洒下（细节）
+```
+
+## 风格关键词速查
+
+| 风格 | 关键词示例 |
+|------|-----------|
+| 摄影写实 | 「摄影风格」「电影质感」「自然光」「浅景深」 |
+| 水彩插画 | 「水彩风格」「手绘感」「淡彩」 |
+| 3D 渲染 | 「3D 渲染」「Blender 风格」「等距视角」 |
+| 扁平设计 | 「扁平插画」「矢量风格」「简洁线条」 |
+| 像素风 | 「像素画」「8-bit」「复古游戏风格」 |
+| 中国风 | 「国画风格」「水墨画」「工笔画」 |
+
+## 实用技巧
+
+<AccordionGroup>
+  <Accordion title="用英文获得更好效果">
+    gpt-image-2 对英文提示词的理解更精准。如果中文效果不理想，尝试用英文描述：
+
+    ```
+    中文：一个未来城市的夜景
+    英文：A futuristic cityscape at night, neon lights reflecting on wet streets, cyberpunk aesthetic
+    ```
+  </Accordion>
+
+  <Accordion title="控制构图">
+    明确指定视角和构图可以获得更可控的结果：
+
+    - 「俯瞰视角」「鸟瞰图」
+    - 「特写镜头」「微距摄影」
+    - 「居中构图」「三分法构图」
+    - 「全景」「广角」
+  </Accordion>
+
+  <Accordion title="指定不要的元素">
+    可以在提示词中说明不想出现的内容：
+
+    ```
+    一个简洁的办公桌面，白色背景，不要人物，不要文字
+    ```
+  </Accordion>
+
+  <Accordion title="批量生成与筛选">
+    设置 `n=4` 一次生成 4 张图，从中挑选最满意的：
+
+    ```python
+    response = client.images.generate(
+        model="gpt-image-2",
+        prompt="你的提示词",
+        n=4,
+        size="1024x1024"
+    )
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## 常见问题
+
+<AccordionGroup>
+  <Accordion title="生成速度慢怎么办？">
+    4K 分辨率的生成时间较长（30-90 秒属正常范围）。如果只是预览，先用 1024×1024，确认效果后再生成高分辨率版本。
+  </Accordion>
+
+  <Accordion title="中文提示词效果不好？">
+    建议主体描述用英文，风格和细节可以混合中英文。或者先让 Claude 帮你把中文提示词翻译优化为英文。
+  </Accordion>
+</AccordionGroup>

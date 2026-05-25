@@ -1,0 +1,85 @@
+---
+title: "错误码说明"
+sidebarTitle: "错误码"
+description: "常见 API 错误码及解决方案"
+---
+
+## 错误响应格式
+
+```json
+{
+  "error": {
+    "message": "错误描述",
+    "type": "error_type",
+    "code": "error_code"
+  }
+}
+```
+
+## 常见错误码
+
+### 401 Unauthorized
+
+**原因**：API Key 无效或未提供。
+
+**解决方案**：
+- 检查 Authorization Header 格式：`Bearer sk-xxx`
+- 确认 API Key 没有被删除或过期
+- 确认使用的是 SeeOneAPI 的令牌，而非其他平台的
+
+### 402 Payment Required
+
+**原因**：账户余额不足。
+
+**解决方案**：
+- 登录控制台查看余额
+- 充值后即可恢复使用
+
+### 429 Too Many Requests
+
+**原因**：请求频率超过限制。
+
+**解决方案**：
+- 实现指数退避重试机制
+- 降低请求频率
+- 参考[速率限制](/guides/rate-limits)文档
+
+### 500 Internal Server Error
+
+**原因**：服务器内部错误。
+
+**解决方案**：
+- 等待几秒后重试
+- 如果持续出现，查看 [状态页面](https://status.seeoneapi.com) 确认是否有服务故障
+- 联系客服反馈
+
+### 503 Service Unavailable
+
+**原因**：上游模型服务暂时不可用。
+
+**解决方案**：
+- 通常是上游厂商临时故障，等待几分钟后重试
+- 如紧急，考虑切换到同等级的其他模型
+
+## 错误处理最佳实践
+
+```python
+from openai import OpenAI, APIError, RateLimitError, APIConnectionError
+
+client = OpenAI(
+    api_key="sk-你的API密钥",
+    base_url="https://api.seeoneapi.com/v1"
+)
+
+try:
+    response = client.chat.completions.create(
+        model="claude-sonnet-4-20250514",
+        messages=[{"role": "user", "content": "你好"}]
+    )
+except RateLimitError:
+    print("请求过于频繁，请稍后重试")
+except APIConnectionError:
+    print("网络连接失败，请检查网络")
+except APIError as e:
+    print(f"API 错误：{e.status_code} - {e.message}")
+```

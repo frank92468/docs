@@ -1,0 +1,82 @@
+---
+title: "gpt-image-2 图像生成"
+sidebarTitle: "gpt-image-2"
+description: "使用 gpt-image-2 生成高质量图像，支持 4K 输出"
+---
+
+## 概述
+
+gpt-image-2 是 OpenAI 最新的图像生成模型，SeeOneAPI 提供完整的接入支持，包括最高 4096×4096（4K）分辨率输出。
+
+## 快速开始
+
+<CodeGroup>
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="sk-你的API密钥",
+    base_url="https://api.seeoneapi.com/v1"
+)
+
+response = client.images.generate(
+    model="gpt-image-2",
+    prompt="一只可爱的橘猫坐在窗台上看雨，水彩风格",
+    n=1,
+    size="1024x1024"
+)
+
+image_url = response.data[0].url
+print(image_url)
+```
+
+```bash cURL
+curl https://api.seeoneapi.com/v1/images/generations \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer sk-你的API密钥" \
+  -d '{
+    "model": "gpt-image-2",
+    "prompt": "一只可爱的橘猫坐在窗台上看雨，水彩风格",
+    "n": 1,
+    "size": "1024x1024"
+  }'
+```
+
+</CodeGroup>
+
+## 支持的分辨率
+
+| 尺寸 | 参数值 | 说明 |
+|------|--------|------|
+| 标准 | `1024x1024` | 默认尺寸，速度最快 |
+| 高清 | `2048x2048` | 2K 分辨率 |
+| 超清 | `4096x4096` | 4K 分辨率，细节最丰富 |
+| 横版 | `1536x1024` | 适合横幅、封面 |
+| 竖版 | `1024x1536` | 适合海报、手机壁纸 |
+
+## 返回格式
+
+支持两种返回格式：
+
+- `url`：返回图片临时 URL（默认，有效期有限）
+- `b64_json`：返回 base64 编码的图片数据
+
+```python
+# 获取 base64 格式
+response = client.images.generate(
+    model="gpt-image-2",
+    prompt="你的提示词",
+    size="1024x1024",
+    response_format="b64_json"
+)
+
+import base64
+image_bytes = base64.b64decode(response.data[0].b64_json)
+with open("output.png", "wb") as f:
+    f.write(image_bytes)
+```
+
+<Note>
+  建议生产环境使用 `b64_json` 格式，避免 URL 过期导致图片丢失。
+</Note>

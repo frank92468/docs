@@ -1,0 +1,86 @@
+---
+title: "对话补全"
+sidebarTitle: "对话补全"
+description: "POST /v1/chat/completions"
+api: "POST https://api.seeoneapi.com/v1/chat/completions"
+---
+
+## 请求参数
+
+| 参数 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | 模型 ID，如 `claude-sonnet-4-20250514` |
+| `messages` | array | 是 | 消息数组 |
+| `max_tokens` | integer | 否 | 最大输出 Token 数 |
+| `temperature` | number | 否 | 采样温度，0-2，默认 1 |
+| `top_p` | number | 否 | 核采样参数，0-1 |
+| `stream` | boolean | 否 | 是否流式输出，默认 false |
+| `stop` | string/array | 否 | 停止生成的标记 |
+
+## 消息格式
+
+```json
+{
+  "messages": [
+    {"role": "system", "content": "你是一个有帮助的助手"},
+    {"role": "user", "content": "你好"},
+    {"role": "assistant", "content": "你好！有什么可以帮助你的？"},
+    {"role": "user", "content": "帮我写一段代码"}
+  ]
+}
+```
+
+支持的角色：`system`、`user`、`assistant`。
+
+## 请求示例
+
+```bash
+curl https://api.seeoneapi.com/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer sk-你的API密钥" \
+  -d '{
+    "model": "claude-sonnet-4-20250514",
+    "messages": [
+      {"role": "user", "content": "用一句话解释递归"}
+    ],
+    "max_tokens": 256
+  }'
+```
+
+## 响应示例
+
+```json
+{
+  "id": "chatcmpl-abc123",
+  "object": "chat.completion",
+  "created": 1716000000,
+  "model": "claude-sonnet-4-20250514",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "递归就是函数调用自身来解决问题的方法——要理解递归，请先理解递归。"
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 12,
+    "completion_tokens": 35,
+    "total_tokens": 47
+  }
+}
+```
+
+## 流式输出
+
+设置 `stream: true` 后，响应通过 Server-Sent Events (SSE) 返回：
+
+```
+data: {"id":"chatcmpl-abc123","choices":[{"delta":{"content":"递归"},"index":0}]}
+
+data: {"id":"chatcmpl-abc123","choices":[{"delta":{"content":"就是"},"index":0}]}
+
+data: [DONE]
+```

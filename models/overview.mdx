@@ -1,0 +1,44 @@
+---
+title: "模型总览"
+sidebarTitle: "总览"
+description: "SeeOneAPI 支持的所有模型一览"
+---
+
+## 可用模型
+
+SeeOneAPI 目前提供以下厂商的模型：
+
+<CardGroup cols={2}>
+  <Card title="Claude 系列" icon="brain" href="/models/claude">
+    Anthropic 出品，推理和长文本能力领先
+  </Card>
+  <Card title="GPT 系列" icon="microchip" href="/models/gpt">
+    OpenAI 出品，全能多模态
+  </Card>
+</CardGroup>
+
+## 模型选择指南
+
+| 场景 | 推荐模型 | 理由 |
+|------|---------|------|
+| 复杂推理 / 代码 | Claude Sonnet 4 | 性价比最优的推理模型 |
+| 长文档处理 | Claude Sonnet 4 | 200K 上下文窗口 |
+| 日常对话 / 轻量任务 | Claude Haiku 3.5 | 速度快、成本低 |
+| 多模态 / 图文理解 | GPT-4o | 原生多模态支持 |
+| 图像生成 | gpt-image-2 | 最新图像生成模型 |
+| 最强推理 | Claude Opus 4 / o3 | 顶级推理能力 |
+
+## API 格式
+
+所有模型统一使用 OpenAI 兼容格式调用，无需为不同厂商的模型切换 SDK。
+
+```python
+# Claude 和 GPT 使用完全相同的调用方式
+client = OpenAI(base_url="https://api.seeoneapi.com/v1")
+
+# 调用 Claude
+client.chat.completions.create(model="claude-sonnet-4-20250514", ...)
+
+# 调用 GPT
+client.chat.completions.create(model="gpt-4o", ...)
+```

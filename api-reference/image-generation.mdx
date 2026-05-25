@@ -1,0 +1,72 @@
+---
+title: "图像生成"
+sidebarTitle: "图像生成"
+description: "POST /v1/images/generations"
+api: "POST https://api.seeoneapi.com/v1/images/generations"
+---
+
+## 请求参数
+
+| 参数 | 类型 | 必填 | 默认值 | 说明 |
+|------|------|------|--------|------|
+| `model` | string | 是 | — | `gpt-image-2` |
+| `prompt` | string | 是 | — | 图像描述 |
+| `n` | integer | 否 | 1 | 生成数量，1-4 |
+| `size` | string | 否 | `1024x1024` | 图像尺寸 |
+| `quality` | string | 否 | `auto` | `auto` / `high` / `medium` / `low` |
+| `response_format` | string | 否 | `url` | `url` 或 `b64_json` |
+
+## 支持的尺寸
+
+`1024x1024`、`1536x1024`、`1024x1536`、`2048x2048`、`4096x4096`
+
+## 请求示例
+
+```bash
+curl https://api.seeoneapi.com/v1/images/generations \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer sk-你的API密钥" \
+  -d '{
+    "model": "gpt-image-2",
+    "prompt": "A serene Japanese garden with cherry blossoms, watercolor style",
+    "n": 1,
+    "size": "1024x1024",
+    "quality": "high"
+  }'
+```
+
+## 响应示例
+
+URL 格式：
+
+```json
+{
+  "created": 1716000000,
+  "data": [
+    {
+      "url": "https://...",
+      "revised_prompt": "A serene Japanese garden..."
+    }
+  ]
+}
+```
+
+Base64 格式（`response_format: "b64_json"`）：
+
+```json
+{
+  "created": 1716000000,
+  "data": [
+    {
+      "b64_json": "iVBORw0KGgo...",
+      "revised_prompt": "A serene Japanese garden..."
+    }
+  ]
+}
+```
+
+## 注意事项
+
+- 4K（4096×4096）生成耗时较长，建议超时设置 120 秒以上
+- `revised_prompt` 是模型优化后的提示词
+- URL 格式的链接有有效期，生产环境建议使用 `b64_json`
