@@ -8,7 +8,16 @@ description: "使用 gpt-image-2 生成高质量图像，支持 4K 输出"
 
 gpt-image-2 是 OpenAI 最新的图像生成模型，SeeOneAPI 提供完整的接入支持，包括最高 4096×4096（4K）分辨率输出。
 
-## 快速开始
+## 调用方式
+
+SeeOneAPI 支持两种方式调用 gpt-image-2：
+
+| 方式 | 端点 | 适用场景 |
+|------|------|---------|
+| Images API（推荐） | `POST /v1/images/generations` | 标准图像生成，兼容性最好 |
+| Responses API | `POST /v1/responses` | OpenAI 新版接口格式 |
+
+## 快速开始（Images API）
 
 <CodeGroup>
 
@@ -31,6 +40,24 @@ image_url = response.data[0].url
 print(image_url)
 ```
 
+```javascript Node.js
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  apiKey: 'sk-你的API密钥',
+  baseURL: 'https://api.seeoneapi.com/v1',
+});
+
+const response = await client.images.generate({
+  model: 'gpt-image-2',
+  prompt: '一只可爱的橘猫坐在窗台上看雨，水彩风格',
+  n: 1,
+  size: '1024x1024',
+});
+
+console.log(response.data[0].url);
+```
+
 ```bash cURL
 curl https://api.seeoneapi.com/v1/images/generations \
   -H "Content-Type: application/json" \
@@ -45,25 +72,57 @@ curl https://api.seeoneapi.com/v1/images/generations \
 
 </CodeGroup>
 
+## Responses API 调用方式
+
+如果你使用 OpenAI 新版 Responses API 格式，也可以通过以下方式调用：
+
+```bash
+curl https://api.seeoneapi.com/v1/responses \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer sk-你的API密钥" \
+  -d '{
+    "model": "gpt-image-2",
+    "input": "一只可爱的橘猫坐在窗台上看雨，水彩风格",
+    "tools": [{"type": "image_generation"}]
+  }'
+```
+
+<Info>
+  Responses API 是 OpenAI 推出的新一代接口格式。如果你的工具链已经在使用 Responses API，可以直接对接；否则推荐使用上面的 Images API，兼容性更好。
+</Info>
+
 ## 支持的分辨率
 
 | 尺寸 | 参数值 | 说明 |
 |------|--------|------|
 | 标准 | `1024x1024` | 默认尺寸，速度最快 |
+| 横版 | `1536x1024` | 适合横幅、封面、博客题图 |
+| 竖版 | `1024x1536` | 适合海报、手机壁纸、社交媒体 |
 | 高清 | `2048x2048` | 2K 分辨率 |
 | 超清 | `4096x4096` | 4K 分辨率，细节最丰富 |
-| 横版 | `1536x1024` | 适合横幅、封面 |
-| 竖版 | `1024x1536` | 适合海报、手机壁纸 |
+
+## 质量参数
+
+通过 `quality` 参数控制图片质量：
+
+| 质量 | 说明 | 适用场景 |
+|------|------|---------| 
+| `auto` | 模型自动判断（默认） | 大多数场景 |
+| `high` | 最高质量 | 商用素材、精细插画 |
+| `medium` | 中等质量 | 日常使用 |
+| `low` | 较低质量 | 快速预览、草稿 |
 
 ## 返回格式
 
 支持两种返回格式：
 
-- `url`：返回图片临时 URL（默认，有效期有限）
-- `b64_json`：返回 base64 编码的图片数据
+| 格式 | 参数值 | 说明 |
+|------|--------|------|
+| URL | `url`（默认） | 返回图片临时 URL，有效期有限 |
+| Base64 | `b64_json` | 返回 base64 编码的图片数据 |
 
 ```python
-# 获取 base64 格式
+# 获取 base64 格式（推荐生产环境使用）
 response = client.images.generate(
     model="gpt-image-2",
     prompt="你的提示词",
@@ -80,3 +139,40 @@ with open("output.png", "wb") as f:
 <Note>
   建议生产环境使用 `b64_json` 格式，避免 URL 过期导致图片丢失。
 </Note>
+
+## 批量生成
+
+设置 `n` 参数一次生成多张图片（最多 4 张），从中挑选最满意的：
+
+```python
+response = client.images.generate(
+    model="gpt-image-2",
+    prompt="极简风格的科技公司 Logo，白色背景",
+    n=4,
+    size="1024x1024"
+)
+
+for i, img in enumerate(response.data):
+    print(f"图片 {i+1}: {img.url}")
+```
+
+## 注意事项
+
+<Warning>
+  4K（4096×4096）生成时间较长，30-90 秒属正常范围。请设置足够的超时时间（推荐 120 秒以上）。
+</Warning>
+
+- `revised_prompt` 字段会返回模型实际使用的优化后提示词，便于理解和改进
+- 中文提示词可用，但英文提示词通常效果更精准
+- 具体定价请查看 [模型广场](https://seeoneapi.com/#/pricing)
+
+## 下一步
+
+<CardGroup cols={2}>
+  <Card title="参数详解" icon="sliders" href="/image-generation/parameters">
+    全部请求参数的详细说明
+  </Card>
+  <Card title="提示词技巧" icon="wand-magic-sparkles" href="/image-generation/best-practices">
+    写出更好的图像生成提示词
+  </Card>
+</CardGroup>

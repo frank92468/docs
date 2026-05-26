@@ -73,7 +73,7 @@ client = OpenAI(
 
 try:
     response = client.chat.completions.create(
-        model="claude-sonnet-4-20250514",
+        model="claude-sonnet-4-5-20250929",
         messages=[{"role": "user", "content": "你好"}]
     )
 except RateLimitError:

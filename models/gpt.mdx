@@ -6,18 +6,37 @@ description: "OpenAI GPT 全系列模型接入指南"
 
 ## 可用模型
 
-| 模型 ID | 上下文窗口 | 特点 |
-|---------|-----------|------|
-| `gpt-4o` | 128K | 全能多模态，支持图文 |
-| `gpt-4.1` | 1M | 超长上下文，适合代码和指令跟随 |
-| `gpt-4o-mini` | 128K | 轻量版，速度快成本低 |
-| `o3` | 200K | 高级推理模型 |
-| `o4-mini` | 200K | 轻量推理模型 |
-| `gpt-image-2` | — | 图像生成专用，见[图像生成章节](/image-generation/gpt-image-2) |
+<Info>
+  模型列表持续更新。最新可用模型和实时定价请查看 [模型广场](https://seeoneapi.com/#/pricing)。
+</Info>
+
+### GPT 系列
+
+| 模型 ID | 上下文 | 特点 | 推荐场景 |
+|---------|--------|------|---------|
+| `gpt-4o` | 128K | 多模态旗舰，支持图文输入 | 通用场景、图文理解 |
+| `gpt-4o-mini` | 128K | 轻量快速版 | 控制成本、快速响应 |
+| `gpt-4.1` | 1M | 超长上下文，指令跟随增强 | 长文档处理、代码生成 |
+| `gpt-4.1-mini` | 1M | 4.1 轻量版 | 成本敏感的长文本场景 |
+
+### 推理模型
+
+| 模型 ID | 上下文 | 特点 | 推荐场景 |
+|---------|--------|------|---------|
+| `o3` | 200K | 高级推理模型，已大幅降价 | 复杂推理、数学、编程 |
+| `o4-mini` | 200K | 轻量推理模型 | 日常编程任务 |
+
+### 图像生成
+
+| 模型 ID | 说明 | 推荐场景 |
+|---------|------|---------|
+| `gpt-image-2` | 最新图像生成，支持 1K/2K/4K | 详见 [图像生成](/image-generation/gpt-image-2) |
 
 ## 基本调用
 
-```python
+<CodeGroup>
+
+```python Python
 from openai import OpenAI
 
 client = OpenAI(
@@ -31,7 +50,41 @@ response = client.chat.completions.create(
         {"role": "user", "content": "用 Python 实现一个快排算法"}
     ]
 )
+
+print(response.choices[0].message.content)
 ```
+
+```javascript Node.js
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  apiKey: 'sk-你的API密钥',
+  baseURL: 'https://api.seeoneapi.com/v1',
+});
+
+const response = await client.chat.completions.create({
+  model: 'gpt-4o',
+  messages: [
+    { role: 'user', content: '用 Python 实现一个快排算法' }
+  ],
+});
+
+console.log(response.choices[0].message.content);
+```
+
+```bash cURL
+curl https://api.seeoneapi.com/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer sk-你的API密钥" \
+  -d '{
+    "model": "gpt-4o",
+    "messages": [
+      {"role": "user", "content": "用 Python 实现一个快排算法"}
+    ]
+  }'
+```
+
+</CodeGroup>
 
 ## 多模态调用（图片输入）
 
@@ -55,9 +108,34 @@ response = client.chat.completions.create(
 )
 ```
 
-## 使用建议
+<Tip>
+  也可以使用 base64 编码传图：将 `url` 字段改为 `data:image/jpeg;base64,{base64数据}` 格式。
+</Tip>
 
-- **通用任务**：GPT-4o 是最均衡的选择
-- **超长文档**：GPT-4.1 支持 1M 上下文
-- **控制成本**：GPT-4o-mini 适合批量处理
-- **图像生成**：使用 gpt-image-2，详见[图像生成](/image-generation/gpt-image-2)
+## 推理模型注意事项
+
+使用 o3 / o4-mini 等推理模型时，有几个参数差异需要注意：
+
+```python
+response = client.chat.completions.create(
+    model="o3",
+    messages=[{"role": "user", "content": "证明 e 是无理数"}],
+    max_completion_tokens=16000,  # 注意：用 max_completion_tokens 而非 max_tokens
+    # temperature 仅支持 1（默认值）
+    # 不要传 top_p 参数
+)
+```
+
+<Warning>
+  推理模型的 `temperature` 只支持设为 1，且不支持 `top_p` 参数。输出请用 `max_completion_tokens` 控制。
+</Warning>
+
+## 模型选择建议
+
+| 你的需求 | 推荐模型 | 理由 |
+|---------|---------|------|
+| 通用任务、图文理解 | GPT-4o | 最均衡的多模态模型 |
+| 批量处理、控制成本 | GPT-4o-mini | 便宜且快速 |
+| 超长文档 / 大型代码库 | GPT-4.1 | 1M 上下文窗口 |
+| 高级推理、数学 | o3 | 深度推理能力 |
+| 图像生成 | gpt-image-2 | 详见[图像生成](/image-generation/gpt-image-2) |

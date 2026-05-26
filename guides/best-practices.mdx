@@ -10,9 +10,9 @@ description: "高效使用 SeeOneAPI 的实用建议"
 
 | 任务类型 | 推荐 | 原因 |
 |---------|------|------|
-| 文本分类、提取 | Claude Haiku 3.5 / GPT-4o-mini | 简单任务，轻量模型足够 |
-| 对话、写作、翻译 | Claude Sonnet 4 / GPT-4o | 能力和成本的最佳平衡 |
-| 复杂推理、数学 | Claude Opus 4 / o3 | 需要最强推理能力 |
+| 文本分类、提取 | Claude Haiku 4.5 / GPT-4o-mini | 简单任务，轻量模型足够 |
+| 对话、写作、翻译 | Claude Sonnet 4.5 / GPT-4o | 能力和成本的最佳平衡 |
+| 复杂推理、数学 | Claude Opus 4.5 / o3 | 需要最强推理能力 |
 | 图像生成 | gpt-image-2 | 目前唯一可用的图像生成模型 |
 
 ## 优化 Token 使用
@@ -29,9 +29,9 @@ description: "高效使用 SeeOneAPI 的实用建议"
 
 ```python
 FALLBACK_MODELS = [
-    "claude-sonnet-4-20250514",
+    "claude-sonnet-4-5-20250929",
     "gpt-4o",
-    "claude-haiku-3-5-20241022"
+    "claude-haiku-4-5-20251001"
 ]
 
 def call_with_fallback(messages):

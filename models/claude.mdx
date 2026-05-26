@@ -6,15 +6,40 @@ description: "Anthropic Claude 全系列模型接入指南"
 
 ## 可用模型
 
-| 模型 ID | 上下文窗口 | 特点 |
-|---------|-----------|------|
-| `claude-opus-4-20250514` | 200K | 最强推理，适合复杂任务 |
-| `claude-sonnet-4-20250514` | 200K | 性价比最优，日常首选 |
-| `claude-haiku-3-5-20241022` | 200K | 速度最快，成本最低 |
+<Info>
+  模型列表持续更新。最新可用模型和实时定价请查看 [模型广场](https://seeoneapi.com/#/pricing)。
+</Info>
+
+### Claude 4.5 系列（最新）
+
+| 模型 ID | 上下文 | 特点 | 推荐场景 |
+|---------|--------|------|---------|
+| `claude-opus-4-5-20251101` | 200K | SWE-bench 80.9%，当前最强编程模型 | 复杂推理、高难度编程 |
+| `claude-sonnet-4-5-20250929` | 200K | SWE-bench 77.2%，性价比极高 | 日常编程、智能体开发 |
+| `claude-sonnet-4-5-20250929-thinking` | 200K | Sonnet 4.5 思维链模式 | 需要深度推理的编程任务 |
+| `claude-haiku-4-5-20251001` | 200K | 速度比 Sonnet 快 2 倍+，SWE-bench 73.3% | 实时聊天、分类、结对编程 |
+
+### Claude 4 系列
+
+| 模型 ID | 上下文 | 特点 | 推荐场景 |
+|---------|--------|------|---------|
+| `claude-opus-4-20250514` | 200K | Claude 4 旗舰版 | 复杂任务 |
+| `claude-sonnet-4-20250514` | 200K | 性价比最优的全能型 | 通用开发首选 |
+| `claude-sonnet-4-20250514-thinking` | 200K | Sonnet 4 思维链模式 | 复杂推理 |
+
+### Claude 3.5 系列
+
+| 模型 ID | 上下文 | 特点 | 推荐场景 |
+|---------|--------|------|---------|
+| `claude-haiku-3-5-20241022` | 200K | 最低成本，速度极快 | 批量处理、简单任务 |
 
 ## 基本调用
 
-```python
+所有 Claude 模型使用 OpenAI 兼容格式调用，无需 Anthropic SDK：
+
+<CodeGroup>
+
+```python Python
 from openai import OpenAI
 
 client = OpenAI(
@@ -23,24 +48,62 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="claude-sonnet-4-20250514",
+    model="claude-sonnet-4-5-20250929",
     max_tokens=4096,
     messages=[
         {"role": "system", "content": "你是一个有帮助的助手"},
         {"role": "user", "content": "解释一下量子计算的基本原理"}
     ]
 )
+
+print(response.choices[0].message.content)
 ```
+
+```javascript Node.js
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  apiKey: 'sk-你的API密钥',
+  baseURL: 'https://api.seeoneapi.com/v1',
+});
+
+const response = await client.chat.completions.create({
+  model: 'claude-sonnet-4-5-20250929',
+  max_tokens: 4096,
+  messages: [
+    { role: 'system', content: '你是一个有帮助的助手' },
+    { role: 'user', content: '解释一下量子计算的基本原理' }
+  ],
+});
+
+console.log(response.choices[0].message.content);
+```
+
+```bash cURL
+curl https://api.seeoneapi.com/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer sk-你的API密钥" \
+  -d '{
+    "model": "claude-sonnet-4-5-20250929",
+    "max_tokens": 4096,
+    "messages": [
+      {"role": "system", "content": "你是一个有帮助的助手"},
+      {"role": "user", "content": "解释一下量子计算的基本原理"}
+    ]
+  }'
+```
+
+</CodeGroup>
 
 ## 支持的功能
 
 <AccordionGroup>
   <Accordion title="流式输出">
-    设置 `stream=True` 即可获得流式响应：
+    设置 `stream=True` 即可获得流式响应，适合聊天界面和实时展示：
 
     ```python
     stream = client.chat.completions.create(
-        model="claude-sonnet-4-20250514",
+        model="claude-sonnet-4-5-20250929",
         messages=[{"role": "user", "content": "写一首诗"}],
         stream=True
     )
@@ -52,7 +115,7 @@ response = client.chat.completions.create(
   </Accordion>
 
   <Accordion title="多轮对话">
-    通过 messages 数组传递对话历史：
+    通过 messages 数组传递对话历史，模型会基于上下文进行回复：
 
     ```python
     messages = [
@@ -64,19 +127,41 @@ response = client.chat.completions.create(
   </Accordion>
 
   <Accordion title="System Prompt">
-    使用 system 角色设定助手行为：
+    使用 system 角色设定助手行为，这对控制输出风格和格式非常有效：
 
     ```python
     messages = [
-        {"role": "system", "content": "你是一位资深的代码审查专家，请用中文回复"},
+        {"role": "system", "content": "你是一位资深的代码审查专家。请用中文回复，指出代码问题并给出改进建议。"},
         {"role": "user", "content": "请审查以下代码..."}
     ]
     ```
   </Accordion>
+
+  <Accordion title="Thinking 模式（思维链）">
+    使用 `-thinking` 后缀的模型可以显示完整的推理过程，适合复杂问题：
+
+    ```python
+    response = client.chat.completions.create(
+        model="claude-sonnet-4-5-20250929-thinking",
+        max_tokens=16000,
+        messages=[
+            {"role": "user", "content": "证明根号2是无理数"}
+        ]
+    )
+    ```
+
+    <Warning>
+      Thinking 模型的输出会包含思考过程，Token 消耗较大。建议设置较高的 `max_tokens`。
+    </Warning>
+  </Accordion>
 </AccordionGroup>
 
-## 使用建议
+## 模型选择建议
 
-- **日常开发**：优先使用 Claude Sonnet 4，在能力和成本之间取得最佳平衡
-- **轻量任务**：分类、摘要、简单问答用 Claude Haiku 3.5，速度快且省钱
-- **高难度推理**：数学证明、复杂代码架构等用 Claude Opus 4
+| 你的需求 | 推荐模型 | 理由 |
+|---------|---------|------|
+| 日常开发、写代码 | Claude Sonnet 4.5 | 编程能力顶级，性价比高 |
+| 快速分类、摘要、简单问答 | Claude Haiku 4.5 | 速度快 2 倍+，成本最低 |
+| 数学证明、复杂架构设计 | Claude Opus 4.5 | 当前 SWE-bench 最高分 |
+| 需要看到推理过程 | Sonnet 4.5 Thinking | 思维链模式，调试推理逻辑 |
+| 预算最小化 | Claude Haiku 3.5 | 上一代 Haiku，成本极低 |

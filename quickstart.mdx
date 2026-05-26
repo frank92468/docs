@@ -6,37 +6,31 @@ description: "5 分钟完成注册并发送第一个 API 请求"
 
 ## 第一步：注册账号
 
-前往 [SeeOneAPI 控制台](https://seeoneapi.com) 注册账号。
+前往 [SeeOneAPI 控制台](https://seeoneapi.com) 注册账号。支持邮箱注册。
 
-## 第二步：获取 API Key
+## 第二步：充值
 
-登录后，在控制台的「令牌」页面创建一个新的 API Key。
+在控制台的「充值」页面选择充值金额，支持支付宝和微信支付。充值后余额即刻到账。
+
+<Tip>
+  充值后余额永不过期，用多少扣多少。
+</Tip>
+
+## 第三步：获取 API Key
+
+登录后，进入控制台「令牌」页面：
+- 可以直接复制**默认令牌**使用
+- 或点击「新建令牌」创建新的 API Key，设置名称和额度上限
 
 <Warning>
   请妥善保管你的 API Key，不要将其提交到公开代码仓库或分享给他人。
 </Warning>
 
-## 第三步：充值
-
-在控制台的「充值」页面选择充值金额，支持支付宝和微信支付。新用户首次充值可获赠额度。
-
 ## 第四步：发送第一个请求
 
-SeeOneAPI 完全兼容 OpenAI API 格式，只需修改 Base URL 即可。
+SeeOneAPI 完全兼容 OpenAI API 格式，只需修改 `base_url` 和 `api_key`：
 
 <CodeGroup>
-
-```bash cURL
-curl https://api.seeoneapi.com/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer sk-你的API密钥" \
-  -d '{
-    "model": "claude-sonnet-4-20250514",
-    "messages": [
-      {"role": "user", "content": "你好，请介绍一下你自己"}
-    ]
-  }'
-```
 
 ```python Python
 from openai import OpenAI
@@ -47,7 +41,7 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="claude-sonnet-4-20250514",
+    model="claude-sonnet-4-5-20250929",
     messages=[
         {"role": "user", "content": "你好，请介绍一下你自己"}
     ]
@@ -65,7 +59,7 @@ const client = new OpenAI({
 });
 
 const response = await client.chat.completions.create({
-  model: 'claude-sonnet-4-20250514',
+  model: 'claude-sonnet-4-5-20250929',
   messages: [
     { role: 'user', content: '你好，请介绍一下你自己' }
   ],
@@ -74,11 +68,38 @@ const response = await client.chat.completions.create({
 console.log(response.choices[0].message.content);
 ```
 
+```bash cURL
+curl https://api.seeoneapi.com/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer sk-你的API密钥" \
+  -d '{
+    "model": "claude-sonnet-4-5-20250929",
+    "messages": [
+      {"role": "user", "content": "你好，请介绍一下你自己"}
+    ]
+  }'
+```
+
 </CodeGroup>
 
 <Check>
   如果你看到了 Claude 的回复，恭喜你！你已经成功接入 SeeOneAPI。
 </Check>
+
+## 第五步：接入你的工具
+
+大多数开发者会在 IDE 插件或聊天客户端中使用 API。我们支持所有 OpenAI 兼容的工具：
+
+| 工具 | 配置 Base URL | 说明 |
+|------|-------------|------|
+| Cherry Studio | `https://api.seeoneapi.com` | 不带 `/v1` |
+| Cline（VS Code） | `https://api.seeoneapi.com/v1` | 带 `/v1` |
+| NextChat | `https://api.seeoneapi.com` | 不带 `/v1` |
+| LobeChat | `https://api.seeoneapi.com/v1` | 带 `/v1` |
+
+<Info>
+  详细的工具配置教程请查看 [常见工具接入指南](/guides/tools-integration)。
+</Info>
 
 ## 下一步
 
@@ -92,7 +113,7 @@ console.log(response.choices[0].message.content);
   <Card title="图像生成" icon="image" href="/image-generation/gpt-image-2">
     使用 gpt-image-2 生成图像
   </Card>
-  <Card title="错误码" icon="circle-exclamation" href="/guides/error-codes">
-    了解常见错误及解决方案
+  <Card title="工具接入" icon="plug" href="/guides/tools-integration">
+    在 Cherry Studio、Cline 等工具中使用
   </Card>
 </CardGroup>

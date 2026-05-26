@@ -1,0 +1,133 @@
+---
+title: "常见工具接入"
+sidebarTitle: "工具接入"
+description: "在 Cherry Studio、Cline、LobeChat 等主流工具中使用 SeeOneAPI"
+---
+
+SeeOneAPI 兼容 OpenAI API 格式，绝大多数支持自定义 API 地址的工具都可以直接接入。下面列出最常见的几款工具的配置方法。
+
+核心就两步：**Base URL** 改成 `https://api.seeoneapi.com/v1`，**API Key** 填你在控制台创建的令牌。
+
+## Cherry Studio
+
+[Cherry Studio](https://cherry-ai.com/) 是国内最流行的多模型桌面客户端。
+
+1. 打开 Cherry Studio → 设置 → 模型服务商
+2. 点击「添加」，选择 OpenAI 兼容
+3. 填入以下信息：
+
+| 字段 | 值 |
+|------|------|
+| 名称 | SeeOneAPI（自定义） |
+| API 地址 | `https://api.seeoneapi.com` |
+| API Key | `sk-你的API密钥` |
+
+4. 点击「获取模型列表」，勾选你需要的模型
+5. 保存后即可在对话中选择 SeeOneAPI 的模型
+
+<Tip>
+  Cherry Studio 会自动从 `/v1/models` 拉取可用模型列表，你不需要手动填写模型名。
+</Tip>
+
+## Cline（VS Code 插件）
+
+[Cline](https://github.com/cline/cline) 是 VS Code 上最热门的 AI 编程助手插件。
+
+1. 安装 Cline 插件后，打开设置面板
+2. API Provider 选择 **OpenAI Compatible**
+3. 填入：
+
+| 字段 | 值 |
+|------|------|
+| Base URL | `https://api.seeoneapi.com/v1` |
+| API Key | `sk-你的API密钥` |
+| Model | `claude-sonnet-4-5-20250929`（推荐） |
+
+4. 保存后即可使用
+
+<Info>
+  Cline 使用 Claude 效果最佳。推荐 Claude Sonnet 4.5 作为主力模型，复杂任务切换 Claude Opus 4.5。
+</Info>
+
+## NextChat（ChatGPT Next Web）
+
+[NextChat](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web) 是部署量最大的开源聊天前端。
+
+1. 进入设置 → 模型服务商 → 自定义
+2. 填入：
+
+| 字段 | 值 |
+|------|------|
+| 接口地址 | `https://api.seeoneapi.com` |
+| API Key | `sk-你的API密钥` |
+
+3. 在模型列表中手动添加或通过接口拉取可用模型
+
+<Warning>
+  NextChat 的接口地址末尾**不要**加 `/v1`，它会自动拼接。
+</Warning>
+
+## LobeChat
+
+[LobeChat](https://github.com/lobehub/lobe-chat) 是另一款优秀的开源聊天前端。
+
+1. 设置 → 语言模型 → OpenAI
+2. 填入：
+
+| 字段 | 值 |
+|------|------|
+| API 代理地址 | `https://api.seeoneapi.com/v1` |
+| API Key | `sk-你的API密钥` |
+
+3. 开启「获取模型列表」开关
+4. 在对话中即可选择 SeeOneAPI 的模型
+
+## Claude Code（CLI）
+
+如果你使用 Claude Code 命令行工具，可以通过环境变量接入：
+
+```bash
+export ANTHROPIC_BASE_URL="https://api.seeoneapi.com"
+export ANTHROPIC_API_KEY="sk-你的API密钥"
+
+# 然后正常使用
+claude
+```
+
+<Warning>
+  Claude Code 使用的是 Anthropic 原生格式（非 OpenAI 兼容格式）。请确认你的 SeeOneAPI 账户支持 Anthropic 原生格式路由，具体请在控制台查看或联系客服。
+</Warning>
+
+## OpenCat / BotGem
+
+iOS / macOS 上的轻量级客户端：
+
+1. 设置 → 团队 / API → 自定义 API
+2. API Host：`https://api.seeoneapi.com`
+3. API Key：填入你的令牌
+4. 选择模型即可使用
+
+## 其他工具
+
+任何支持 **OpenAI API 格式**的工具都可以接入 SeeOneAPI。通用配置方法：
+
+| 配置项 | 填写 |
+|--------|------|
+| Base URL / API Host | `https://api.seeoneapi.com/v1`（或不带 `/v1`，视工具而定） |
+| API Key | 控制台创建的令牌（`sk-` 开头） |
+| Model | 从 [模型广场](https://seeoneapi.com/#/pricing) 复制模型 ID |
+
+<Tip>
+  如果工具连接失败，先检查 Base URL 末尾是否多了或少了 `/v1`——不同工具的要求不一样。
+</Tip>
+
+## 环境变量方式（通用）
+
+很多框架和工具支持通过环境变量自动读取配置，这种方式无需在工具 UI 中设置：
+
+```bash
+export OPENAI_API_KEY="sk-你的API密钥"
+export OPENAI_BASE_URL="https://api.seeoneapi.com/v1"
+```
+
+设置后，所有读取这两个环境变量的工具都会自动使用 SeeOneAPI。

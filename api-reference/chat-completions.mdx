@@ -9,7 +9,7 @@ api: "POST https://api.seeoneapi.com/v1/chat/completions"
 
 | 参数 | 类型 | 必填 | 说明 |
 |------|------|------|------|
-| `model` | string | 是 | 模型 ID，如 `claude-sonnet-4-20250514` |
+| `model` | string | 是 | 模型 ID，如 `claude-sonnet-4-5-20250929` |
 | `messages` | array | 是 | 消息数组 |
 | `max_tokens` | integer | 否 | 最大输出 Token 数 |
 | `temperature` | number | 否 | 采样温度，0-2，默认 1 |
@@ -39,7 +39,7 @@ curl https://api.seeoneapi.com/v1/chat/completions \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer sk-你的API密钥" \
   -d '{
-    "model": "claude-sonnet-4-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "messages": [
       {"role": "user", "content": "用一句话解释递归"}
     ],
@@ -54,7 +54,7 @@ curl https://api.seeoneapi.com/v1/chat/completions \
   "id": "chatcmpl-abc123",
   "object": "chat.completion",
   "created": 1716000000,
-  "model": "claude-sonnet-4-20250514",
+  "model": "claude-sonnet-4-5-20250929",
   "choices": [
     {
       "index": 0,

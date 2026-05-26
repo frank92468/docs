@@ -19,23 +19,28 @@
   "navbar": {
     "links": [
       {
-        "label": "首页",
+        "label": "控制台",
         "href": "https://seeoneapi.com"
       },
       {
-        "label": "定价",
-        "href": "/pricing"
+        "label": "模型广场",
+        "href": "https://seeoneapi.com/#/pricing"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "控制台",
-      "href": "https://seeoneapi.com"
+      "label": "立即注册",
+      "href": "https://seeoneapi.com/#/register"
     }
   },
   "navigation": {
     "global": {
       "anchors": [
+        {
+          "anchor": "模型广场",
+          "href": "https://seeoneapi.com/#/pricing",
+          "icon": "tag"
+        },
         {
           "anchor": "API 状态",
           "href": "https://status.seeoneapi.com",
@@ -80,6 +85,7 @@
           {
             "group": "开发指南",
             "pages": [
+              "guides/tools-integration",
               "guides/best-practices",
               "guides/rate-limits",
               "guides/error-codes",
