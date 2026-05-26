@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "name": "SeeOneAPI",
+  "name": "SeeOneAPI Docs",
   "theme": "maple",
   "colors": {
     "primary": "#2563EB",
