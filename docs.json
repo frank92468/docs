@@ -2,6 +2,7 @@
   "$schema": "https://mintlify.com/docs.json",
   "name": "SeeOneAPI Docs",
   "theme": "maple",
+  "layout": "topnav",
   "colors": {
     "primary": "#2563EB",
     "light": "#60A5FA",
