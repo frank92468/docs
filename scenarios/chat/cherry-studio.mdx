@@ -1,0 +1,41 @@
+---
+title: "Cherry Studio"
+sidebarTitle: "Cherry Studio"
+description: "在 Cherry Studio 中接入 SeeOneAPI"
+icon: "cherries"
+---
+
+[Cherry Studio](https://cherry-ai.com/) 是国内最流行的多模型桌面客户端，支持 Windows / macOS / Linux。
+
+## 配置步骤
+
+1. 打开 Cherry Studio → **设置** → **模型服务商**
+2. 点击「添加」，选择 **OpenAI 兼容**
+3. 填入配置：
+
+| 字段 | 值 |
+|------|------|
+| 名称 | SeeOneAPI（自定义） |
+| API 地址 | `https://api.seeoneapi.com` |
+| API Key | `sk-你的API密钥` |
+
+4. 点击「**获取模型列表**」，勾选你需要的模型
+5. 保存后即可在对话中选择 SeeOneAPI 的模型
+
+<Tip>
+  Cherry Studio 会自动从 `/v1/models` 拉取可用模型列表，你不需要手动输入模型名。
+</Tip>
+
+## 推荐模型
+
+| 用途 | 推荐模型 |
+|------|---------|
+| 日常聊天 | Claude Sonnet 4.5 |
+| 快速问答 | Claude Haiku 4.5 |
+| 图文理解 | GPT-4o |
+| 深度推理 | Claude Opus 4.5 |
+
+## 注意事项
+
+- API 地址末尾**不要**加 `/v1`，Cherry Studio 会自动拼接
+- 如果获取模型列表失败，检查 API Key 是否正确

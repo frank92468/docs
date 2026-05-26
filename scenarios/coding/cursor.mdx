@@ -1,0 +1,27 @@
+---
+title: "Cursor"
+sidebarTitle: "Cursor"
+description: "在 Cursor 中接入 SeeOneAPI"
+icon: "i-cursor"
+---
+
+[Cursor](https://cursor.com/) 是内置 AI 的代码编辑器，基于 VS Code。
+
+## 配置步骤
+
+1. **Settings** → **Models** → **OpenAI API Key**
+2. 填入 API Key：`sk-你的API密钥`
+3. 覆写 Base URL：`https://api.seeoneapi.com/v1`
+4. 选择模型使用
+
+<Warning>
+  Cursor 对自定义 API 端点的支持因版本而异，具体请参考 Cursor 官方文档中关于 OpenAI API Key 的配置说明。
+</Warning>
+
+## 推荐模型
+
+| 功能 | 推荐模型 |
+|------|---------|
+| Tab 补全 | Claude Haiku 4.5（速度快） |
+| Chat | Claude Sonnet 4.5 |
+| Composer | Claude Opus 4.5（复杂任务） |

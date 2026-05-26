@@ -25,12 +25,13 @@
       {
         "label": "AI 出图",
         "href": "https://img.seeoneapi.com"
-      },
-      {
-        "label": "控制台",
-        "href": "https://www.seeoneapi.com/console"
       }
-    ]
+    ],
+    "primary": {
+      "type": "button",
+      "label": "控制台",
+      "href": "https://www.seeoneapi.com/console"
+    }
   },
   "navigation": {
     "global": {
@@ -82,13 +83,36 @@
         "tab": "使用场景",
         "groups": [
           {
-            "group": "使用场景",
+            "group": "概览",
             "pages": [
-              "scenarios/overview",
-              "scenarios/chat-clients",
-              "scenarios/coding-tools",
-              "scenarios/image-generation",
-              "scenarios/frameworks"
+              "scenarios/overview"
+            ]
+          },
+          {
+            "group": "AI Agent",
+            "pages": [
+              "scenarios/agent/openclaw"
+            ]
+          },
+          {
+            "group": "对话型 AI",
+            "pages": [
+              "scenarios/chat/cherry-studio",
+              "scenarios/chat/chatbox",
+              "scenarios/chat/openwebui",
+              "scenarios/chat/nextweb"
+            ]
+          },
+          {
+            "group": "编程开发",
+            "pages": [
+              "scenarios/coding/cline",
+              "scenarios/coding/roo-code",
+              "scenarios/coding/gemini-cli",
+              "scenarios/coding/claude-code",
+              "scenarios/coding/codex-cli",
+              "scenarios/coding/opencode",
+              "scenarios/coding/cursor"
             ]
           }
         ]

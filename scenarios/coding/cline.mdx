@@ -1,0 +1,35 @@
+---
+title: "Cline (VS Code)"
+sidebarTitle: "Cline (VS Code)"
+description: "在 Cline 中接入 SeeOneAPI"
+icon: "code"
+---
+
+[Cline](https://github.com/cline/cline) 是 VS Code 上最热门的 AI 编程助手插件。
+
+## 配置步骤
+
+1. VS Code 中安装 Cline 插件
+2. 打开 Cline 设置面板
+3. API Provider 选择 **OpenAI Compatible**
+4. 填入：
+
+| 字段 | 值 |
+|------|------|
+| Base URL | `https://api.seeoneapi.com/v1` |
+| API Key | `sk-你的API密钥` |
+| Model | `claude-sonnet-4-5-20250929` |
+
+5. 保存后即可使用
+
+<Info>
+  Cline 使用 Claude 效果最佳。推荐 Claude Sonnet 4.5 作为主力模型，复杂任务切换 Claude Opus 4.5。
+</Info>
+
+## 推荐模型
+
+| 任务类型 | 推荐模型 |
+|---------|---------|
+| 日常编码 | Claude Sonnet 4.5 |
+| 复杂架构 | Claude Opus 4.5 |
+| 快速问答 | Claude Haiku 4.5 |

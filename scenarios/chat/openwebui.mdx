@@ -1,0 +1,32 @@
+---
+title: "Open WebUI"
+sidebarTitle: "Open WebUI"
+description: "在 Open WebUI 中接入 SeeOneAPI"
+icon: "browser"
+---
+
+[Open WebUI](https://github.com/open-webui/open-webui) 是一款功能丰富的自部署聊天界面，支持多模型、RAG、文件上传等。
+
+## Docker 部署
+
+```bash
+docker run -d \
+  -e OPENAI_API_BASE_URL=https://api.seeoneapi.com/v1 \
+  -e OPENAI_API_KEY=sk-你的API密钥 \
+  -p 3000:8080 \
+  ghcr.io/open-webui/open-webui:main
+```
+
+## 已部署实例配置
+
+如果你已经部署了 Open WebUI：
+
+1. 管理面板 → **设置** → **连接**
+2. 添加 OpenAI 兼容接口：
+
+| 字段 | 值 |
+|------|------|
+| URL | `https://api.seeoneapi.com/v1` |
+| API Key | `sk-你的API密钥` |
+
+3. 保存后在模型列表中即可看到 SeeOneAPI 的模型

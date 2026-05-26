@@ -1,0 +1,28 @@
+---
+title: "Roo Code (VS Code)"
+sidebarTitle: "Roo Code (VS Code)"
+description: "在 Roo Code 中接入 SeeOneAPI"
+icon: "code"
+---
+
+[Roo Code](https://github.com/RooVetGit/Roo-Code) 是 Cline 的增强分支，独特之处在于支持多模式分配不同模型。
+
+## 配置步骤
+
+1. VS Code 中安装 Roo Code 插件
+2. 打开设置 → API Provider 选择 **OpenAI Compatible**
+3. 填入：
+
+| 字段 | 值 |
+|------|------|
+| Base URL | `https://api.seeoneapi.com/v1` |
+| API Key | `sk-你的API密钥` |
+
+## 多模式模型分配
+
+| 模式 | 推荐模型 | 理由 |
+|------|---------|------|
+| 架构模式 | Claude Opus 4.5 | 复杂架构设计 |
+| 编码模式 | Claude Sonnet 4.5 | 日常编码性价比高 |
+| 问答模式 | Claude Haiku 4.5 | 快速回答，成本低 |
+| 调试模式 | Claude Sonnet 4.5 | 问题排查需要准确性 |

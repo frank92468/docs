@@ -1,0 +1,44 @@
+---
+title: "Claude Code"
+sidebarTitle: "Claude Code"
+description: "在 Claude Code CLI 中接入 SeeOneAPI"
+icon: "terminal"
+---
+
+[Claude Code](https://docs.anthropic.com/en/docs/claude-code) 是 Anthropic 官方的命令行 AI 编程工具，是目前最强大的 AI 编程 CLI 之一。
+
+## 配置方式
+
+通过环境变量接入：
+
+```bash
+export ANTHROPIC_BASE_URL="https://api.seeoneapi.com"
+export ANTHROPIC_API_KEY="sk-你的API密钥"
+
+# 启动 Claude Code
+claude
+```
+
+<Warning>
+  Claude Code 使用 Anthropic 原生格式（非 OpenAI 兼容格式）。请确认你的 SeeOneAPI 账户支持 Anthropic 格式路由，具体请在控制台查看或联系客服。
+</Warning>
+
+## 常用命令
+
+```bash
+# 交互模式
+claude
+
+# 直接提问
+claude "解释这个函数的作用"
+
+# 在当前项目中工作
+claude "帮我重构 src/utils.py 中的错误处理逻辑"
+
+# 代码审查
+claude "审查最近一次 git commit 的改动"
+```
+
+## 推荐模型
+
+Claude Code 默认使用 Claude Sonnet，适合大部分编程任务。如需更强的推理能力，可以在对话中使用 `/model` 命令切换到 Opus。

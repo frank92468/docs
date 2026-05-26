@@ -1,0 +1,34 @@
+---
+title: "ChatGPT Next Web"
+sidebarTitle: "ChatGPT Next Web"
+description: "在 NextChat 中接入 SeeOneAPI"
+icon: "globe"
+---
+
+[NextChat](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web)（原 ChatGPT Next Web）是部署量最大的开源聊天前端。
+
+## 配置步骤
+
+1. 进入 **设置** → **模型服务商** → **自定义**
+2. 填入：
+
+| 字段 | 值 |
+|------|------|
+| 接口地址 | `https://api.seeoneapi.com` |
+| API Key | `sk-你的API密钥` |
+
+3. 在模型列表中手动添加或通过接口拉取可用模型
+
+<Warning>
+  NextChat 的接口地址末尾**不要**加 `/v1`，它会自动拼接。
+</Warning>
+
+## Docker 自部署
+
+```bash
+docker run -d \
+  -p 3000:3000 \
+  -e OPENAI_API_KEY=sk-你的API密钥 \
+  -e BASE_URL=https://api.seeoneapi.com \
+  yidadaa/chatgpt-next-web
+```

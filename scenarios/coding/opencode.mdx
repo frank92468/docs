@@ -1,0 +1,60 @@
+---
+title: "OpenCode"
+sidebarTitle: "OpenCode"
+description: "在 OpenCode 终端工具中接入 SeeOneAPI"
+icon: "terminal"
+---
+
+[OpenCode](https://github.com/opencode-ai/opencode) 是一款开源终端 AI 编程工具，支持多 Provider 配置和多 Agent 分工。
+
+## 配置方式
+
+在项目根目录创建 `opencode.json`：
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "seeoneapi": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "SeeOneAPI",
+      "options": {
+        "baseURL": "https://api.seeoneapi.com/v1",
+        "apiKey": "{env:SEEONEAPI_KEY}"
+      },
+      "models": {
+        "claude-sonnet-4-5-20250929": {
+          "name": "Claude Sonnet 4.5",
+          "limit": { "context": 200000, "output": 8192 }
+        },
+        "gpt-4.1": {
+          "name": "GPT-4.1",
+          "limit": { "context": 1047576, "output": 32768 }
+        }
+      }
+    }
+  },
+  "model": "seeoneapi/claude-sonnet-4-5-20250929"
+}
+```
+
+设置环境变量后启动：
+
+```bash
+export SEEONEAPI_KEY="sk-你的API密钥"
+opencode
+```
+
+## 多 Agent 分工配置
+
+OpenCode 支持为不同任务分配不同模型：
+
+```json
+{
+  "agents": {
+    "build": { "model": "seeoneapi/claude-sonnet-4-5-20250929" },
+    "plan": { "model": "seeoneapi/claude-sonnet-4-5-20250929" },
+    "general": { "model": "seeoneapi/gpt-4.1" }
+  }
+}
+```

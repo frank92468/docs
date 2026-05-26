@@ -1,0 +1,77 @@
+---
+title: "OpenClaw"
+sidebarTitle: "OpenClaw"
+description: "通过 Telegram 指挥 AI Agent 完成各种任务"
+icon: "paw"
+---
+
+[OpenClaw](https://github.com/nicepkg/openclaw) 是一款开源 AI Agent 框架，让你通过 Telegram 机器人指挥 AI 完成各种自动化任务。支持自定义 Skill、多轮对话和工具调用。
+
+## 为什么用 OpenClaw
+
+- **Telegram 即入口**：随时随地通过 Telegram 下达指令，不需要打开电脑
+- **Skill 系统**：模块化的技能体系，可以自定义各种自动化工作流
+- **多模型支持**：通过 SeeOneAPI 接入 Claude、GPT 全系列
+
+## 配置 SeeOneAPI
+
+在 OpenClaw 的配置文件中设置 API 接入：
+
+```yaml
+# config.yaml
+llm:
+  provider: openai-compatible
+  base_url: https://api.seeoneapi.com/v1
+  api_key: sk-你的API密钥
+  model: claude-sonnet-4-5-20250929
+```
+
+或通过环境变量配置：
+
+```bash
+export OPENAI_API_KEY="sk-你的API密钥"
+export OPENAI_BASE_URL="https://api.seeoneapi.com/v1"
+```
+
+## Telegram Bot 设置
+
+1. 在 Telegram 中找到 [@BotFather](https://t.me/BotFather)，创建一个新 Bot
+2. 获取 Bot Token
+3. 在 OpenClaw 配置中填入 Token：
+
+```yaml
+telegram:
+  bot_token: "你的Bot Token"
+  allowed_users:
+    - 你的Telegram用户ID
+```
+
+4. 启动 OpenClaw 后，在 Telegram 中向你的 Bot 发送消息即可开始使用
+
+## 推荐模型配置
+
+| 任务类型 | 推荐模型 | 理由 |
+|---------|---------|------|
+| 日常 Agent 任务 | Claude Sonnet 4.5 | 工具调用准确，性价比高 |
+| 复杂推理和规划 | Claude Opus 4.5 | 最强推理能力 |
+| 简单查询和分类 | Claude Haiku 4.5 | 速度快，成本低 |
+
+## 自定义 Skill
+
+OpenClaw 的强大之处在于 Skill 系统。你可以为不同的工作场景创建专属 Skill：
+
+```
+~/.openclaw/skills/
+├── market-intel/     # 市场情报监控
+│   └── SKILL.md
+├── content-writer/   # 内容生产
+│   └── SKILL.md
+└── code-review/      # 代码审查
+    └── SKILL.md
+```
+
+每个 Skill 通过 `SKILL.md` 定义行为规则，OpenClaw 会根据你的指令自动选择合适的 Skill 执行任务。
+
+<Tip>
+  OpenClaw 适合部署在常驻运行的设备上（如 Mac Mini、云服务器），这样你的 AI Agent 就能 7×24 小时待命。
+</Tip>

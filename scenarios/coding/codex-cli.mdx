@@ -1,0 +1,48 @@
+---
+title: "OpenAI Codex CLI"
+sidebarTitle: "OpenAI Codex CLI"
+description: "在 OpenAI Codex CLI 中接入 SeeOneAPI"
+icon: "terminal"
+---
+
+[Codex CLI](https://github.com/openai/codex) 是 OpenAI 官方推出的命令行编程工具，专为代码生成和终端操作设计。
+
+## 配置方式
+
+通过环境变量接入：
+
+```bash
+export OPENAI_API_KEY="sk-你的API密钥"
+export OPENAI_BASE_URL="https://api.seeoneapi.com/v1"
+
+codex
+```
+
+## 配置文件方式
+
+在 `~/.codex/config.json` 中：
+
+```json
+{
+  "apiKey": "sk-你的API密钥",
+  "baseURL": "https://api.seeoneapi.com/v1",
+  "model": "gpt-4.1"
+}
+```
+
+## 常用命令
+
+```bash
+# 交互模式
+codex
+
+# 直接给任务
+codex "创建一个 Express.js REST API 项目骨架"
+
+# 在当前项目上下文中工作
+codex "给所有函数添加 TypeScript 类型注解"
+```
+
+<Tip>
+  Codex CLI 原生支持 OpenAI 模型。通过 SeeOneAPI 接入后，推荐使用 GPT-4.1（1M 上下文）处理大型代码库。
+</Tip>
