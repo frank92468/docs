@@ -20,17 +20,17 @@
     "links": [
       {
         "label": "控制台",
-        "href": "https://seeoneapi.com"
+        "href": "https://www.seeoneapi.com/console"
       },
       {
         "label": "模型广场",
-        "href": "https://seeoneapi.com/#/pricing"
+        "href": "https://www.seeoneapi.com/pricing"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "立即注册",
-      "href": "https://seeoneapi.com/#/register"
+      "label": "AI 出图",
+      "href": "https://img.seeoneapi.com"
     }
   },
   "navigation": {
@@ -38,7 +38,7 @@
       "anchors": [
         {
           "anchor": "模型广场",
-          "href": "https://seeoneapi.com/#/pricing",
+          "href": "https://www.seeoneapi.com/pricing",
           "icon": "tag"
         },
         {
