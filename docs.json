@@ -4,14 +4,13 @@
   "theme": "mint",
   "colors": {
     "primary": "#2563EB",
-    "light": "#60A5FA",
-    "dark": "#1E40AF"
+    "light": "#3B82F6",
+    "dark": "#1D4ED8"
   },
   "favicon": "/images/favicon.svg",
   "logo": {
     "dark": "/images/logo-dark.svg",
     "light": "/images/logo-light.svg",
-    "size": 180
   },
   "banner": {
     "content": "🚀 gpt-image-2 图像生成已上线！支持 4K 超清输出。[了解详情](/image-generation/gpt-image-2)",
