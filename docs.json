@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "name": "SeeOneAPI 文档中心",
+  "name": "SeeOneAPI",
   "theme": "maple",
   "colors": {
     "primary": "#2563EB",
@@ -10,20 +10,43 @@
   "favicon": "/images/favicon.svg",
   "logo": {
     "dark": "/images/logo-dark.svg",
-    "light": "/images/logo-light.svg"
+    "light": "/images/logo-light.svg",
+    "size": 180
+  },
+  "banner": {
+    "content": "🚀 gpt-image-2 图像生成已上线！支持 4K 超清输出。[了解详情](/image-generation/gpt-image-2)",
+    "dismissible": true
   },
   "navbar": {
     "links": [
       {
-        "label": "控制台",
+        "label": "首页",
         "href": "https://seeoneapi.com"
+      },
+      {
+        "label": "定价",
+        "href": "/pricing"
       }
-    ]
+    ],
+    "primary": {
+      "type": "button",
+      "label": "控制台",
+      "href": "https://seeoneapi.com"
+    }
   },
   "navigation": {
+    "global": {
+      "anchors": [
+        {
+          "anchor": "API 状态",
+          "href": "https://status.seeoneapi.com",
+          "icon": "signal"
+        }
+      ]
+    },
     "tabs": [
       {
-        "tab": "文档",
+        "tab": "首页",
         "groups": [
           {
             "group": "开始使用",
@@ -49,13 +72,18 @@
               "image-generation/parameters",
               "image-generation/best-practices"
             ]
-          },
+          }
+        ]
+      },
+      {
+        "tab": "使用指南",
+        "groups": [
           {
-            "group": "使用指南",
+            "group": "开发指南",
             "pages": [
+              "guides/best-practices",
               "guides/rate-limits",
               "guides/error-codes",
-              "guides/best-practices",
               "guides/migration"
             ]
           },
@@ -84,11 +112,7 @@
       }
     ]
   },
-  "footer": {
-    "socials": {
-      "github": "https://github.com/seeoneapi"
-    }
-  },
+  "footer": {},
   "seo": {
     "metatags": {
       "canonical": "https://docs.seeoneapi.com"
