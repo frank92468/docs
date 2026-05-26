@@ -1,0 +1,74 @@
+---
+title: "图像生成"
+sidebarTitle: "图像生成"
+description: "通过 API 或在线工具使用 gpt-image-2 生成图像"
+---
+
+## 两种使用方式
+
+<CardGroup cols={2}>
+  <Card title="在线出图" icon="browser" href="https://img.seeoneapi.com">
+    无需写代码，在 AI 出图平台直接输入提示词生成图像。适合快速体验和日常使用。
+  </Card>
+  <Card title="API 调用" icon="code" href="/image-generation/gpt-image-2">
+    通过代码调用 gpt-image-2 接口，适合集成到你的应用或工作流中。
+  </Card>
+</CardGroup>
+
+## 在线 AI 出图
+
+访问 [img.seeoneapi.com](https://img.seeoneapi.com) 即可在线使用 gpt-image-2 生成图像：
+
+- 输入中文或英文提示词
+- 选择分辨率（1K / 2K / 4K）
+- 一键生成，支持下载
+
+<Tip>
+  在线出图平台适合快速体验、日常作图。如果需要批量生成或集成到应用中，推荐使用 API 调用。
+</Tip>
+
+## API 调用
+
+通过 `/v1/images/generations` 端点调用：
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="sk-你的API密钥",
+    base_url="https://api.seeoneapi.com/v1"
+)
+
+response = client.images.generate(
+    model="gpt-image-2",
+    prompt="一只可爱的橘猫坐在窗台上看雨，水彩风格",
+    n=1,
+    size="1024x1024"
+)
+
+print(response.data[0].url)
+```
+
+详细参数和用法请查看 [gpt-image-2 完整文档](/image-generation/gpt-image-2)。
+
+## 常见图像生成场景
+
+| 场景 | 提示词建议 | 推荐分辨率 |
+|------|-----------|-----------|
+| 博客 / 公众号题图 | 描述主题 + 风格（扁平插画 / 摄影等） | 1536×1024（横版） |
+| 社交媒体配图 | 主体 + 场景 + 鲜艳色彩 | 1024×1024 |
+| 手机壁纸 | 主题 + 细节丰富 + 竖构图 | 1024×1536（竖版） |
+| 商用素材 | 英文提示词 + quality: high | 2048×2048 或 4096×4096 |
+| Logo / 图标 | 简洁描述 + 矢量风格 / 扁平设计 | 1024×1024 |
+| 快速草稿 | 简短描述即可 | 1024×1024 + quality: low |
+
+## 下一步
+
+<CardGroup cols={2}>
+  <Card title="gpt-image-2 文档" icon="file-lines" href="/image-generation/gpt-image-2">
+    API 调用详解、支持的分辨率和返回格式
+  </Card>
+  <Card title="提示词技巧" icon="wand-magic-sparkles" href="/image-generation/best-practices">
+    写出更好的图像生成提示词
+  </Card>
+</CardGroup>

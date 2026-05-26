@@ -1,0 +1,107 @@
+---
+title: "对话聊天客户端"
+sidebarTitle: "对话聊天"
+description: "在 Cherry Studio、NextChat、LobeChat 等客户端中使用 SeeOneAPI"
+---
+
+## Cherry Studio
+
+[Cherry Studio](https://cherry-ai.com/) 是国内最流行的多模型桌面客户端，支持 Windows / macOS / Linux。
+
+1. 打开 Cherry Studio → 设置 → 模型服务商
+2. 点击「添加」，选择 OpenAI 兼容
+3. 填入配置：
+
+| 字段 | 值 |
+|------|------|
+| 名称 | SeeOneAPI（自定义） |
+| API 地址 | `https://api.seeoneapi.com` |
+| API Key | `sk-你的API密钥` |
+
+4. 点击「获取模型列表」，勾选你需要的模型
+5. 保存后即可在对话中选择 SeeOneAPI 的模型
+
+<Tip>
+  Cherry Studio 会自动从 `/v1/models` 拉取可用模型列表，你不需要手动输入模型名。
+</Tip>
+
+## NextChat（ChatGPT Next Web）
+
+[NextChat](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web) 是部署量最大的开源聊天前端，可自部署也可直接使用。
+
+1. 进入设置 → 模型服务商 → 自定义
+2. 填入：
+
+| 字段 | 值 |
+|------|------|
+| 接口地址 | `https://api.seeoneapi.com` |
+| API Key | `sk-你的API密钥` |
+
+3. 在模型列表中手动添加或通过接口拉取可用模型
+
+<Warning>
+  NextChat 的接口地址末尾**不要**加 `/v1`，它会自动拼接。
+</Warning>
+
+## LobeChat
+
+[LobeChat](https://github.com/lobehub/lobe-chat) 是另一款优秀的开源聊天前端，UI 设计精美。
+
+1. 设置 → 语言模型 → OpenAI
+2. 填入：
+
+| 字段 | 值 |
+|------|------|
+| API 代理地址 | `https://api.seeoneapi.com/v1` |
+| API Key | `sk-你的API密钥` |
+
+3. 开启「获取模型列表」开关
+4. 在对话中即可选择 SeeOneAPI 的模型
+
+## Chatbox AI
+
+[Chatbox](https://chatboxai.app/) 是一款简洁的跨平台桌面客户端。
+
+1. 设置 → AI 模型提供方 → 选择 OpenAI API 兼容
+2. 填入：
+
+| 字段 | 值 |
+|------|------|
+| API Domain | `https://api.seeoneapi.com` |
+| API Key | `sk-你的API密钥` |
+
+3. 模型名填写你要使用的模型 ID（如 `claude-sonnet-4-5-20250929`）
+
+## OpenCat / BotGem
+
+iOS / macOS 上的轻量级客户端：
+
+1. 设置 → 团队 / API → 自定义 API
+2. API Host：`https://api.seeoneapi.com`
+3. API Key：填入你的令牌
+4. 选择模型即可使用
+
+## Open WebUI
+
+[Open WebUI](https://github.com/open-webui/open-webui) 是一款功能丰富的自部署聊天界面。
+
+在 Docker 部署时，通过环境变量配置：
+
+```bash
+docker run -d \
+  -e OPENAI_API_BASE_URL=https://api.seeoneapi.com/v1 \
+  -e OPENAI_API_KEY=sk-你的API密钥 \
+  -p 3000:8080 \
+  ghcr.io/open-webui/open-webui:main
+```
+
+或在已部署的 Open WebUI 管理面板中，前往「设置 → 连接」添加 OpenAI 兼容接口。
+
+## 推荐模型
+
+| 用途 | 推荐模型 |
+|------|---------|
+| 日常聊天 | Claude Sonnet 4.5 |
+| 快速问答 | Claude Haiku 4.5 |
+| 多模态（图文） | GPT-4o |
+| 深度推理 | Claude Opus 4.5 |

@@ -19,19 +19,18 @@
   "navbar": {
     "links": [
       {
-        "label": "控制台",
-        "href": "https://www.seeoneapi.com/console"
-      },
-      {
         "label": "模型广场",
         "href": "https://www.seeoneapi.com/pricing"
+      },
+      {
+        "label": "AI 出图",
+        "href": "https://img.seeoneapi.com"
+      },
+      {
+        "label": "控制台",
+        "href": "https://www.seeoneapi.com/console"
       }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "AI 出图",
-      "href": "https://img.seeoneapi.com"
-    }
+    ]
   },
   "navigation": {
     "global": {
@@ -80,12 +79,26 @@
         ]
       },
       {
-        "tab": "使用指南",
+        "tab": "使用场景",
+        "groups": [
+          {
+            "group": "使用场景",
+            "pages": [
+              "scenarios/overview",
+              "scenarios/chat-clients",
+              "scenarios/coding-tools",
+              "scenarios/image-generation",
+              "scenarios/frameworks"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "开发指南",
         "groups": [
           {
             "group": "开发指南",
             "pages": [
-              "guides/tools-integration",
               "guides/best-practices",
               "guides/rate-limits",
               "guides/error-codes",
@@ -111,6 +124,17 @@
               "api-reference/overview",
               "api-reference/chat-completions",
               "api-reference/image-generation"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "最新公告",
+        "groups": [
+          {
+            "group": "最新公告",
+            "pages": [
+              "changelog"
             ]
           }
         ]

@@ -1,0 +1,67 @@
+---
+title: "使用场景总览"
+sidebarTitle: "总览"
+description: "SeeOneAPI 在各类工具和场景中的接入方式"
+---
+
+SeeOneAPI 兼容 OpenAI API 格式，几乎所有支持自定义 API 地址的工具都可以直接接入。本章按场景分类，提供各工具的详细配置教程。
+
+## 四大核心应用领域
+
+<CardGroup cols={2}>
+  <Card title="💬 对话聊天" icon="comments" href="/scenarios/chat-clients">
+    在 Cherry Studio、NextChat、LobeChat 等聊天客户端中使用 Claude 和 GPT 模型进行日常对话、写作、翻译。
+  </Card>
+  <Card title="💻 编程开发" icon="code" href="/scenarios/coding-tools">
+    在 Cline、Cursor、Claude Code 等 AI 编程工具中接入，获得代码生成、审查、重构能力。
+  </Card>
+  <Card title="🎨 图像生成" icon="image" href="/scenarios/image-generation">
+    通过 API 调用 gpt-image-2 生成图像，或在 AI 出图平台直接使用。
+  </Card>
+  <Card title="🔧 开发框架" icon="gears" href="/scenarios/frameworks">
+    在 LangChain、Dify 等开发框架中接入 SeeOneAPI，构建 AI 应用和工作流。
+  </Card>
+</CardGroup>
+
+## 通用接入方法
+
+不管哪种工具，核心配置就两项：
+
+| 配置项 | 填写 |
+|--------|------|
+| Base URL / API Host | `https://api.seeoneapi.com/v1`（部分工具不带 `/v1`） |
+| API Key | 控制台创建的令牌（`sk-` 开头） |
+
+```python
+# 所有兼容 OpenAI 格式的工具，只需要改这两行
+client = OpenAI(
+    api_key="sk-你的API密钥",
+    base_url="https://api.seeoneapi.com/v1"
+)
+```
+
+## 环境变量方式（通用）
+
+很多工具支持通过环境变量自动读取配置：
+
+```bash
+export OPENAI_API_KEY="sk-你的API密钥"
+export OPENAI_BASE_URL="https://api.seeoneapi.com/v1"
+```
+
+设置后，所有读取这两个环境变量的工具都会自动使用 SeeOneAPI。
+
+## 场景推荐模型
+
+| 场景 | 推荐模型 | 理由 |
+|------|---------|------|
+| 日常聊天 | Claude Sonnet 4.5 | 理解力强，回复质量高 |
+| 轻量问答 | Claude Haiku 4.5 | 速度快，成本低 |
+| AI 编程 | Claude Sonnet 4.5 / Opus 4.5 | SWE-bench 顶级分数 |
+| 图像生成 | gpt-image-2 | 支持 4K，效果出色 |
+| 长文档处理 | GPT-4.1 | 1M 上下文窗口 |
+| 多模态理解 | GPT-4o | 图文输入原生支持 |
+
+<Info>
+  找不到你用的工具？只要它支持 OpenAI API 格式，就可以接入。参考通用接入方法填写 Base URL 和 API Key 即可。
+</Info>

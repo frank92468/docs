@@ -1,0 +1,117 @@
+---
+title: "AI 编程工具"
+sidebarTitle: "编程开发"
+description: "在 Cline、Cursor、Claude Code 等编程工具中使用 SeeOneAPI"
+---
+
+## Cline（VS Code 插件）
+
+[Cline](https://github.com/cline/cline) 是 VS Code 上最热门的 AI 编程助手插件。
+
+1. 安装 Cline 插件后，打开设置面板
+2. API Provider 选择 **OpenAI Compatible**
+3. 填入：
+
+| 字段 | 值 |
+|------|------|
+| Base URL | `https://api.seeoneapi.com/v1` |
+| API Key | `sk-你的API密钥` |
+| Model | `claude-sonnet-4-5-20250929`（推荐） |
+
+4. 保存后即可使用
+
+<Info>
+  Cline 使用 Claude 效果最佳。推荐 Claude Sonnet 4.5 作为主力模型，复杂任务切换 Claude Opus 4.5。
+</Info>
+
+## Roo Code（VS Code 插件）
+
+[Roo Code](https://github.com/RooVetGit/Roo-Code) 是 Cline 的分支，支持多模式（架构 / 编码 / 问答 / 调试）分配不同模型。
+
+1. 安装 Roo Code 后，打开设置
+2. API Provider 选择 **OpenAI Compatible**
+3. Base URL：`https://api.seeoneapi.com/v1`
+4. API Key：`sk-你的API密钥`
+5. 可为不同模式配置不同模型：
+
+| 模式 | 推荐模型 | 理由 |
+|------|---------|------|
+| 架构模式 | Claude Opus 4.5 | 复杂架构设计 |
+| 编码模式 | Claude Sonnet 4.5 | 日常编码性价比高 |
+| 问答模式 | Claude Haiku 4.5 | 快速回答，成本低 |
+| 调试模式 | Claude Sonnet 4.5 | 问题排查需要准确性 |
+
+## Cursor
+
+[Cursor](https://cursor.com/) 是内置 AI 的代码编辑器。通过 OpenAI API 兼容方式接入：
+
+1. 设置 → Models → OpenAI API Key
+2. 填入 API Key：`sk-你的API密钥`
+3. 覆写 Base URL：`https://api.seeoneapi.com/v1`
+4. 选择模型使用
+
+<Warning>
+  Cursor 对自定义 API 端点的支持因版本而异，具体请参考 Cursor 官方文档中关于 OpenAI API Key 的配置说明。
+</Warning>
+
+## Claude Code（CLI）
+
+如果你使用 Claude Code 命令行工具：
+
+```bash
+export ANTHROPIC_BASE_URL="https://api.seeoneapi.com"
+export ANTHROPIC_API_KEY="sk-你的API密钥"
+
+# 正常使用
+claude
+```
+
+<Warning>
+  Claude Code 使用 Anthropic 原生格式（非 OpenAI 兼容格式）。请确认你的 SeeOneAPI 账户支持 Anthropic 格式路由，具体请在控制台查看或联系客服。
+</Warning>
+
+## OpenCode
+
+[OpenCode](https://github.com/opencode-ai/opencode) 是一款终端 AI 编程工具。
+
+在项目根目录创建 `opencode.json`：
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "seeoneapi": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "SeeOneAPI",
+      "options": {
+        "baseURL": "https://api.seeoneapi.com/v1",
+        "apiKey": "{env:SEEONEAPI_KEY}"
+      },
+      "models": {
+        "claude-sonnet-4-5-20250929": {
+          "name": "Claude Sonnet 4.5",
+          "limit": { "context": 200000, "output": 8192 }
+        }
+      }
+    }
+  },
+  "model": "seeoneapi/claude-sonnet-4-5-20250929"
+}
+```
+
+设置环境变量后即可使用：
+
+```bash
+export SEEONEAPI_KEY="sk-你的API密钥"
+opencode
+```
+
+## 编程场景推荐模型
+
+| 场景 | 推荐模型 | 理由 |
+|------|---------|------|
+| 日常编码 | Claude Sonnet 4.5 | SWE-bench 77.2%，性价比极高 |
+| 复杂架构 / 重构 | Claude Opus 4.5 | SWE-bench 80.9%，最强编程 |
+| 代码问答 / 解释 | Claude Haiku 4.5 | 速度快，成本低 |
+| 深度推理 | Sonnet 4.5 Thinking | 显示推理过程，调试复杂逻辑 |
+| 超长代码库 | GPT-4.1 | 1M 上下文窗口 |
