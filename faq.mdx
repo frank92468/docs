@@ -1,0 +1,129 @@
+---
+title: "常见问题"
+sidebarTitle: "常见问题"
+description: "SeeOneAPI 常见问题解答"
+---
+
+## 基础问题
+
+<AccordionGroup>
+  <Accordion title="SeeOneAPI 是什么？">
+    SeeOneAPI 是一个面向中国开发者的海外 AI 模型 API 接入平台。我们提供 Claude 和 GPT 全系列模型的 API 服务，兼容 OpenAI 格式，改两行代码即可接入。
+  </Accordion>
+
+  <Accordion title="跟直接用官方 API 有什么区别？">
+    对于大陆用户来说，直接使用 Anthropic 或 OpenAI 官方 API 存在网络不稳定、支付困难、注册门槛高等问题。SeeOneAPI 解决了这些痛点：稳定的线路、支持支付宝/微信充值、统一的 OpenAI 兼容格式调用所有模型。
+  </Accordion>
+
+  <Accordion title="支持哪些模型？">
+    目前支持 Claude 全系列（Opus 4.5 / Sonnet 4.5 / Haiku 4.5，含 Thinking 模式）和 GPT 全系列（GPT-4o / GPT-4.1 / o3 / o4-mini / gpt-image-2）。完整列表请查看 [模型广场](https://www.seeoneapi.com/pricing)。
+  </Accordion>
+
+  <Accordion title="API 格式兼容 OpenAI 吗？">
+    完全兼容。所有模型（包括 Claude）统一使用 OpenAI API 格式调用，支持 OpenAI 官方 SDK（Python / Node.js）和所有兼容 OpenAI 格式的第三方工具。
+  </Accordion>
+</AccordionGroup>
+
+## 账户与充值
+
+<AccordionGroup>
+  <Accordion title="怎么注册？">
+    前往 [控制台](https://www.seeoneapi.com/console) 注册账号，支持邮箱注册。
+  </Accordion>
+
+  <Accordion title="支持哪些充值方式？">
+    支持支付宝和微信支付，扫码即充，秒到账。
+  </Accordion>
+
+  <Accordion title="充值有最低金额吗？余额会过期吗？">
+    不设最低充值金额，余额永不过期，用多少扣多少。
+  </Accordion>
+
+  <Accordion title="可以开发票吗？">
+    SeeOneAPI 由深圳市星海一念科技有限公司运营，为合法注册商业实体。如需发票请联系客服。
+  </Accordion>
+</AccordionGroup>
+
+## 定价与计费
+
+<AccordionGroup>
+  <Accordion title="怎么收费？">
+    按量计费，根据实际使用的 Token 数量扣费。具体价格请查看 [模型广场](https://www.seeoneapi.com/pricing)。
+  </Accordion>
+
+  <Accordion title="倍率是什么意思？">
+    SeeOneAPI 使用三层倍率体系：模型倍率（不同模型的基础成本系数）、分组倍率（用户分组差异化定价）、补全倍率（输出 token 相对输入 token 的价格系数）。所有倍率都在模型广场公开可查。详细说明请查看 [定价页面](/pricing)。
+  </Accordion>
+
+  <Accordion title="怎么查看我的消费明细？">
+    登录控制台，在「日志」页面可以查看每笔请求的模型、Token 用量和扣费金额。
+  </Accordion>
+
+  <Accordion title="图像生成怎么计费？">
+    gpt-image-2 按次计费，价格取决于分辨率和质量参数。具体单价请在 [模型广场](https://www.seeoneapi.com/pricing) 搜索 `gpt-image-2`。
+  </Accordion>
+</AccordionGroup>
+
+## 接入与使用
+
+<AccordionGroup>
+  <Accordion title="Base URL 是什么？">
+    `https://api.seeoneapi.com/v1`。部分工具（如 Cherry Studio、NextChat）不需要带 `/v1` 后缀，会自动拼接。
+  </Accordion>
+
+  <Accordion title="API Key 在哪里获取？">
+    登录控制台，进入「令牌」页面，可以复制默认令牌或创建新的 API Key。详见 [认证方式](/authentication)。
+  </Accordion>
+
+  <Accordion title="支持流式输出吗？">
+    支持。设置 `stream=true` 即可获得流式响应，所有模型均支持。
+  </Accordion>
+
+  <Accordion title="Cherry Studio / Cline / NextChat 等工具怎么接入？">
+    请查看 [使用场景](/scenarios/overview) 页面，我们提供了各主流工具的详细配置教程。
+  </Accordion>
+
+  <Accordion title="调用报错 401 Unauthorized 怎么办？">
+    检查 API Key 是否正确、是否已过期或被禁用。在控制台「令牌」页面确认令牌状态。详见 [错误码说明](/guides/error-codes)。
+  </Accordion>
+
+  <Accordion title="调用报错 429 Too Many Requests 怎么办？">
+    请求频率超过了限制。降低并发数，加入重试逻辑。详见 [速率限制](/guides/rate-limits)。
+  </Accordion>
+
+  <Accordion title="4K 图像生成很慢怎么办？">
+    4096×4096 分辨率生成时间较长（30-90 秒属正常范围）。请设置足够的超时时间（推荐 120 秒以上）。
+  </Accordion>
+</AccordionGroup>
+
+## 安全与合规
+
+<AccordionGroup>
+  <Accordion title="你们会存储我的对话内容吗？">
+    不会。你的 API 请求和响应内容仅用于实时转发，不做任何持久化存储。我们仅记录请求时间、模型名称、Token 用量等元数据用于计费。详见 [反欺诈与信任白皮书](/trust/overview)。
+  </Accordion>
+
+  <Accordion title="你们的 API 渠道来源合规吗？">
+    所有模型通过官方或官方授权渠道接入，不使用灰色渠道或违规账号。详见 [信任与安全](/trust/overview)。
+  </Accordion>
+
+  <Accordion title="API Key 泄露了怎么办？">
+    立即在控制台「令牌」页面禁用或删除该令牌，然后创建新的 API Key。我们建议为每个应用/环境使用独立的令牌，并设置额度上限。
+  </Accordion>
+</AccordionGroup>
+
+## 其他问题
+
+<AccordionGroup>
+  <Accordion title="有用户交流群吗？">
+    有的，欢迎加入我们的 [Telegram 频道](https://t.me/seeoneapi) 获取最新动态和技术支持。
+  </Accordion>
+
+  <Accordion title="有批量优惠吗？">
+    如果你有较大的用量需求，联系我们获取专属分组和批量优惠。
+  </Accordion>
+
+  <Accordion title="我的问题不在列表中？">
+    通过 [Telegram](https://t.me/seeoneapi) 联系我们，或在控制台内提交反馈，我们会尽快回复。
+  </Accordion>
+</AccordionGroup>
