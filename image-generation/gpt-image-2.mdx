@@ -1,210 +1,262 @@
 ---
 title: "gpt-image-2 图像生成"
-sidebarTitle: "gpt-image-2"
-description: "使用 gpt-image-2 生成高质量图像，支持 4K 输出"
+description: "通过 SeeOneAPI 调用 gpt-image-2 与 gpt-image-2-4k，支持 Images API 直连与 Responses API 工具调用"
 ---
 
 ## 概述
 
-gpt-image-2 是 OpenAI 最新的图像生成模型，SeeOneAPI 提供完整的接入支持，包括最高 4096×4096（4K）分辨率输出。
+SeeOneAPI 提供两个图像生成模型，按需求选择：
 
-## 调用方式
+| 模型 ID | 速度 | 尺寸控制 | 支持端点 | 计费 |
+|---------|------|---------|---------|------|
+| `gpt-image-2` | 快 | 输出固定尺寸（约 1254×1254），传 `size` 被忽略 | 仅 Images API | 0.05 / 次 |
+| `gpt-image-2-4k` | 偏慢 | 可指定具体像素，支持 4K | Images API + Responses API | 0.06 / 次 |
 
-SeeOneAPI 支持两种方式调用 gpt-image-2：
+<Note>
+简单判断：要快、对尺寸不挑 → 用 `gpt-image-2`；要指定精确像素、4K，或要让主模型参与扩写提示词 → 用 `gpt-image-2-4k`。两个模型 ID 不可混用，写错会调用失败。
+</Note>
 
-| 方式 | 端点 | 适用场景 |
-|------|------|---------|
-| Images API（推荐） | `POST /v1/images/generations` | 标准图像生成，兼容性最好 |
-| Responses API | `POST /v1/responses` | OpenAI 新版接口格式 |
+核心配置：
 
-## 快速开始（Images API）
+| 项目 | 值 |
+|------|-----|
+| Base URL | `https://api.seeoneapi.com/v1` |
+| API Key 环境变量 | `SEEONE_API_KEY` |
+| 调度主模型（Responses API） | `gpt-5.5` |
+
+所有示例先设置 Key：
+
+```bash
+export SEEONE_API_KEY="你的 SeeOneAPI Key"
+```
+
+---
+
+## gpt-image-2：快速生成
+
+适合对尺寸不挑、追求速度的场景。**仅支持 Images API**。传入 `size` 不会报错，但会被忽略，实际输出为模型固定尺寸（约 1254×1254），不受控制。需要精确尺寸或 4K，请用 `gpt-image-2-4k`；如需控制画面比例，可在提示词里描述（如 `a wide 16:9 landscape`、`a tall vertical portrait`）。
+
+<Warning>
+走 Responses 端点不会报错，但只返回文本、不生成图片——请勿用 Responses 调 `gpt-image-2`，图像生成请用 Images API。（返回 200 容易被误判为成功，注意甄别。）
+</Warning>
 
 <CodeGroup>
+```bash cURL
+curl -sS "https://api.seeoneapi.com/v1/images/generations" \
+  -H "Authorization: Bearer $SEEONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-image-2",
+    "prompt": "A polished square portrait of a professional AI assistant in a bright futuristic control room. No text, no logos, no watermark.",
+    "response_format": "b64_json"
+  }' | jq -r '.data[0].b64_json' | base64 -d > image.png
+```
 
 ```python Python
+import base64, os
 from openai import OpenAI
 
 client = OpenAI(
-    api_key="sk-你的API密钥",
-    base_url="https://api.seeoneapi.com/v1"
+    api_key=os.environ["SEEONE_API_KEY"],
+    base_url="https://api.seeoneapi.com/v1",
 )
 
-response = client.images.generate(
+result = client.images.generate(
     model="gpt-image-2",
-    prompt="一只可爱的橘猫坐在窗台上看雨，水彩风格",
-    n=1,
-    size="1024x1024"
+    prompt="A polished square portrait of a professional AI assistant in a bright futuristic control room. No text, no logos, no watermark.",
+    response_format="b64_json",
 )
 
-image_url = response.data[0].url
-print(image_url)
+with open("image.png", "wb") as f:
+    f.write(base64.b64decode(result.data[0].b64_json))
 ```
 
 ```javascript Node.js
-import OpenAI from 'openai';
+import fs from "node:fs";
+import OpenAI from "openai";
 
 const client = new OpenAI({
-  apiKey: 'sk-你的API密钥',
-  baseURL: 'https://api.seeoneapi.com/v1',
+  apiKey: process.env.SEEONE_API_KEY,
+  baseURL: "https://api.seeoneapi.com/v1",
 });
 
-const response = await client.images.generate({
-  model: 'gpt-image-2',
-  prompt: '一只可爱的橘猫坐在窗台上看雨，水彩风格',
-  n: 1,
-  size: '1024x1024',
+const result = await client.images.generate({
+  model: "gpt-image-2",
+  prompt: "A polished square portrait of a professional AI assistant in a bright futuristic control room. No text, no logos, no watermark.",
+  response_format: "b64_json",
 });
 
-console.log(response.data[0].url);
+fs.writeFileSync("image.png", Buffer.from(result.data[0].b64_json, "base64"));
 ```
-
-```bash cURL
-curl https://api.seeoneapi.com/v1/images/generations \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer sk-你的API密钥" \
-  -d '{
-    "model": "gpt-image-2",
-    "prompt": "一只可爱的橘猫坐在窗台上看雨，水彩风格",
-    "n": 1,
-    "size": "1024x1024"
-  }'
-```
-
 </CodeGroup>
 
-## Responses API 调用方式
+<Tip>
+传入 `size` 不会报错，但会被忽略，实际输出为模型固定尺寸（约 1254×1254），不受控制。需要精确尺寸或 4K，请用 `gpt-image-2-4k`。
+</Tip>
 
-如果你使用 OpenAI 新版 Responses API 格式，也可以通过以下方式调用：
+---
+
+## gpt-image-2-4k：精确尺寸与 4K
+
+支持指定具体像素值、4K 输出，速度比 `gpt-image-2` 慢。可走 Images API，也可通过 Responses API 让主模型调度。输出默认 png 格式。
+
+### Images API 生成
 
 ```bash
-curl https://api.seeoneapi.com/v1/responses \
+curl -sS "https://api.seeoneapi.com/v1/images/generations" \
+  -H "Authorization: Bearer $SEEONE_API_KEY" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer sk-你的API密钥" \
   -d '{
-    "model": "gpt-image-2",
-    "input": "一只可爱的橘猫坐在窗台上看雨，水彩风格",
-    "tools": [{"type": "image_generation"}]
-  }'
+    "model": "gpt-image-2-4k",
+    "prompt": "A clean 4K landscape of a bright futuristic command center. No text, no logos, no watermark.",
+    "size": "3840x2160",
+    "response_format": "b64_json"
+  }' | jq -r '.data[0].b64_json' | base64 -d > image-4k.png
 ```
 
-<Info>
-  Responses API 是 OpenAI 推出的新一代接口格式。如果你的工具链已经在使用 Responses API，可以直接对接；否则推荐使用上面的 Images API，兼容性更好。
-</Info>
+### 4K 与尺寸规则
 
-## 请求参数
+- 4K 横图：`3840x2160`，竖图：`2160x3840`
+- 最大边长不超过 `3840`
+- 两条边都必须是 `16` 的倍数
+- 长短边比例不超过 `3:1`
+- 总像素不超过 `8,294,400`
 
-| 参数 | 类型 | 必填 | 默认值 | 说明 |
-|------|------|------|--------|------|
-| `model` | string | 是 | — | 固定为 `gpt-image-2` |
-| `prompt` | string | 是 | — | 图像描述，支持中英文 |
-| `n` | integer | 否 | 1 | 生成图片数量，1-4 |
-| `size` | string | 否 | `1024x1024` | 图片尺寸，详见下方[支持的分辨率](#支持的分辨率) |
-| `quality` | string | 否 | `auto` | 图片质量：`auto`、`high`、`medium`、`low` |
-| `response_format` | string | 否 | `url` | 返回格式：`url` 或 `b64_json` |
+<Warning>
+不要把 4K 写成 `4096x4096`，会被拒绝报错（超过最长边 3840 限制）。4K 生成耗时较长，可先用较低画质出草稿确认方向，再提高质量。
+</Warning>
 
-## 支持的分辨率
+### Images API 编辑
 
-| 尺寸 | 参数值 | 说明 |
-|------|--------|------|
-| 标准 | `1024x1024` | 默认尺寸，速度最快 |
-| 横版 | `1536x1024` | 适合横幅、封面、博客题图 |
-| 竖版 | `1024x1536` | 适合海报、手机壁纸、社交媒体 |
-| 高清 | `2048x2048` | 2K 分辨率 |
-| 超清 | `4096x4096` | 4K 分辨率，细节最丰富 |
+使用 `/v1/images/edits`，以 `multipart/form-data` 上传图片，支持单图编辑和多参考图。编辑接口使用 `gpt-image-2-4k`。
 
-## 质量参数
-
-通过 `quality` 参数控制图片质量：
-
-| 质量 | 说明 | 适用场景 |
-|------|------|---------| 
-| `auto` | 模型自动判断（默认） | 大多数场景 |
-| `high` | 最高质量 | 商用素材、精细插画 |
-| `medium` | 中等质量 | 日常使用 |
-| `low` | 较低质量 | 快速预览、草稿 |
-
-## 返回格式
-
-支持两种返回格式：
-
-| 格式 | 参数值 | 说明 |
-|------|--------|------|
-| URL | `url`（默认） | 返回图片临时 URL，有效期有限 |
-| Base64 | `b64_json` | 返回 base64 编码的图片数据 |
-
-```python
-# 获取 base64 格式（推荐生产环境使用）
-response = client.images.generate(
-    model="gpt-image-2",
-    prompt="你的提示词",
-    size="1024x1024",
-    response_format="b64_json"
-)
-
-import base64
-image_bytes = base64.b64decode(response.data[0].b64_json)
-with open("output.png", "wb") as f:
-    f.write(image_bytes)
+<CodeGroup>
+```bash 单图编辑
+curl -sS "https://api.seeoneapi.com/v1/images/edits" \
+  -H "Authorization: Bearer $SEEONE_API_KEY" \
+  -F "model=gpt-image-2-4k" \
+  -F "image=@source.png" \
+  -F "prompt=Keep the same subject and pose, but brighten the lighting and add subtle floating UI panels. No text, no logos." \
+  -F "size=1024x1024" \
+  -F "response_format=b64_json" \
+  | jq -r '.data[0].b64_json' | base64 -d > edited.png
 ```
+
+```bash 多参考图
+curl -sS "https://api.seeoneapi.com/v1/images/edits" \
+  -H "Authorization: Bearer $SEEONE_API_KEY" \
+  -F "model=gpt-image-2-4k" \
+  -F "image[]=@portrait.png" \
+  -F "image[]=@style-reference.png" \
+  -F "prompt=Use the first image as identity reference and the second as lighting and color reference. No text, no logos." \
+  -F "size=1024x1024" \
+  -F "response_format=b64_json" \
+  | jq -r '.data[0].b64_json' | base64 -d > reference-edit.png
+```
+</CodeGroup>
 
 <Note>
-  建议生产环境使用 `b64_json` 格式，避免 URL 过期导致图片丢失。
+需要局部编辑时可传 `mask`，mask 应与第一张输入图尺寸一致并包含 alpha 通道；实际效果仍建议在提示词里明确说明要替换或保留的区域。
 </Note>
 
-## 响应示例
+### Responses API 工具调用
 
-URL 格式（默认）：
-
-```json
-{
-  "created": 1716000000,
-  "data": [
-    {
-      "url": "https://...",
-      "revised_prompt": "模型优化后的提示词"
-    }
-  ]
-}
-```
-
-Base64 格式（`response_format: "b64_json"`）：
+让 `gpt-5.5` 作为主模型理解需求，再通过 `image_generation` 工具调用 `gpt-image-2-4k`。适合多步骤、需要主模型扩写提示词的工作流。最小请求体：
 
 ```json
 {
-  "created": 1716000000,
-  "data": [
-    {
-      "b64_json": "iVBORw0KGgo...",
-      "revised_prompt": "模型优化后的提示词"
-    }
-  ]
+  "model": "gpt-5.5",
+  "input": "Generate an elegant 4K image of a glass AI studio with soft light.",
+  "tools": [
+    { "type": "image_generation", "model": "gpt-image-2-4k", "size": "3840x2160" }
+  ],
+  "stream": true
 }
 ```
 
-`revised_prompt` 字段会返回模型实际使用的优化后提示词，便于理解和改进提示词写法。
+<CodeGroup>
+```python Python
+import base64, os
+from openai import OpenAI
 
-## 批量生成
-
-设置 `n` 参数一次生成多张图片（最多 4 张），从中挑选最满意的：
-
-```python
-response = client.images.generate(
-    model="gpt-image-2",
-    prompt="极简风格的科技公司 Logo，白色背景",
-    n=4,
-    size="1024x1024"
+client = OpenAI(
+    api_key=os.environ["SEEONE_API_KEY"],
+    base_url="https://api.seeoneapi.com/v1",
 )
 
-for i, img in enumerate(response.data):
-    print(f"图片 {i+1}: {img.url}")
+response = client.responses.create(
+    model="gpt-5.5",
+    input="Generate an elegant 4K image of a glass AI studio with soft light.",
+    tools=[{"type": "image_generation", "model": "gpt-image-2-4k", "size": "3840x2160"}],
+)
+
+image_data = [o.result for o in response.output if o.type == "image_generation_call"]
+if image_data:
+    with open("image-4k.png", "wb") as f:
+        f.write(base64.b64decode(image_data[0]))
 ```
+
+```javascript Node.js
+import fs from "node:fs";
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.SEEONE_API_KEY,
+  baseURL: "https://api.seeoneapi.com/v1",
+});
+
+const stream = await client.responses.create({
+  model: "gpt-5.5",
+  input: "Generate an elegant 4K image of a glass AI studio with soft light.",
+  tools: [{ type: "image_generation", model: "gpt-image-2-4k", size: "3840x2160" }],
+  stream: true,
+});
+
+let imageBase64 = "";
+for await (const event of stream) {
+  if (event.type === "response.output_item.done") {
+    const item = event.item;
+    if (item?.type === "image_generation_call" && item.result) imageBase64 = item.result;
+  }
+}
+if (imageBase64) fs.writeFileSync("image-4k.png", Buffer.from(imageBase64, "base64"));
+```
+</CodeGroup>
+
+<Tip>
+图像生成比文本响应耗时更长，建议保留 `stream: true`：可拿到生成进度事件，并在同一条连接里取到最终图片，无需额外轮询和超时恢复。
+</Tip>
+
+如果产品按钮固定是"生成图片"，可用 `tool_choice` 强制走图像工具：
+
+```json
+{
+  "model": "gpt-5.5",
+  "input": "Draw an elegant AI product cover image.",
+  "tools": [{ "type": "image_generation", "model": "gpt-image-2-4k", "size": "1024x1024" }],
+  "tool_choice": { "type": "image_generation" }
+}
+```
+
+---
+
+## 提示词建议
+
+提示词不必很长，但最好明确四件事：
+
+- **主体**：要生成什么（封面、产品图、头像）
+- **构图**：居中、半身、留白、横幅还是方图（用 `gpt-image-2` 时，比例也靠这里描述）
+- **风格**：写实、插画、产品渲染、编辑感
+- **避免项**：不要水印、不要文字、不要变形
+
+<Note>
+如果图片里需要准确文字，建议把文字和图片分开：图像模型生成无字主视觉，文字排版交给前端、Canvas 或设计软件，可控性更高。
+</Note>
 
 ## 注意事项
 
-<Warning>
-  4K（4096×4096）生成时间较长，30-90 秒属正常范围。请设置足够的超时时间（推荐 120 秒以上）。
-</Warning>
-
-- `revised_prompt` 字段会返回模型实际使用的优化后提示词，便于理解和改进
-- 中文提示词可用，但英文提示词通常效果更精准
-- 具体定价请查看 [模型广场](https://www.seeoneapi.com/pricing)
+- **返回格式**：建议固定 `response_format: "b64_json"`，输出默认 png。需要 URL，推荐在后端解码后上传对象存储/CDN，再返回自有 URL。
+- **4K 超时**：4K 等大尺寸生成耗时长，若经 Cloudflare 代理可能因 100s 超时返回 524，建议图像端点使用 DNS-only 模式绕过代理。
+- **存储**：生产环境建议把 base64 解码后上传对象存储/CDN，数据库只存图片 URL、提示词、模型、尺寸和状态。
+- **模型分组隔离**：每个令牌只能调用其所在分组的模型，跨分组调用会返回 `503`「无可用渠道」。Responses 工作流需要主模型 `gpt-5.5` 和 `gpt-image-2-4k` 在同一分组。
+- **计费**：`gpt-image-2` 按 0.05/次，`gpt-image-2-4k` 按 0.06/次，均按成功生成次数计费。

@@ -40,7 +40,7 @@ description: "SeeOneAPI 常见问题解答"
   </Accordion>
 
   <Accordion title="可以开发票吗？">
-    SeeOneAPI 由深圳市星海一念科技有限公司运营，为合法注册商业实体。如需发票请联系客服。
+    SeeOneAPI 由 SEEONE, LLC（美国）运营，为合法注册商业实体。如需发票请联系客服。
   </Accordion>
 </AccordionGroup>
 
@@ -60,7 +60,7 @@ description: "SeeOneAPI 常见问题解答"
   </Accordion>
 
   <Accordion title="图像生成怎么计费？">
-    gpt-image-2 按次计费，价格取决于分辨率和质量参数。具体单价请在 [模型广场](https://www.seeoneapi.com/pricing) 搜索 `gpt-image-2`。
+    按成功生成次数计费：`gpt-image-2` 约 0.05/次，`gpt-image-2-4k` 约 0.06/次。具体单价请在 [模型广场](https://www.seeoneapi.com/pricing) 搜索 `gpt-image-2`，用法见 [图像生成](/image-generation/gpt-image-2)。
   </Accordion>
 </AccordionGroup>
 
@@ -92,7 +92,7 @@ description: "SeeOneAPI 常见问题解答"
   </Accordion>
 
   <Accordion title="4K 图像生成很慢怎么办？">
-    4096×4096 分辨率生成时间较长（30-90 秒属正常范围）。请设置足够的超时时间（推荐 120 秒以上）。
+    3840×2160（4K）分辨率生成时间较长（30-90 秒属正常范围）。请设置足够的超时时间（推荐 120 秒以上）。若经 Cloudflare 代理可能因 100s 超时返回 524，建议图像端点使用 DNS-only 模式绕过。
   </Accordion>
 </AccordionGroup>
 

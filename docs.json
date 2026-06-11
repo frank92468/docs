@@ -34,20 +34,6 @@
     }
   },
   "navigation": {
-    "global": {
-      "anchors": [
-        {
-          "anchor": "模型广场",
-          "href": "https://www.seeoneapi.com/pricing",
-          "icon": "tag"
-        },
-        {
-          "anchor": "API 状态",
-          "href": "https://status.seeoneapi.com",
-          "icon": "signal"
-        }
-      ]
-    },
     "tabs": [
       {
         "tab": "使用指南",
