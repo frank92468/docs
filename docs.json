@@ -50,10 +50,10 @@
     },
     "tabs": [
       {
-        "tab": "首页",
+        "tab": "使用指南",
         "groups": [
           {
-            "group": "开始使用",
+            "group": "快速开始",
             "pages": [
               "introduction",
               "quickstart",
@@ -62,99 +62,61 @@
             ]
           },
           {
-            "group": "模型目录",
+            "group": "模型分组介绍",
             "pages": [
               "models/overview",
-              "models/claude",
-              "models/gpt"
+              "models/token-groups"
             ]
           },
-          {
-            "group": "图像生成",
-            "pages": [
-              "image-generation/gpt-image-2",
-              "image-generation/parameters",
-              "image-generation/best-practices"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "使用场景",
-        "groups": [
-          {
-            "group": "概览",
-            "pages": [
-              "scenarios/overview"
-            ]
-          },
-          {
-            "group": "AI Agent",
-            "pages": [
-              "scenarios/agent/openclaw"
-            ]
-          },
-          {
-            "group": "对话型 AI",
-            "pages": [
-              "scenarios/chat/cherry-studio",
-              "scenarios/chat/chatbox",
-              "scenarios/chat/openwebui",
-              "scenarios/chat/nextweb"
-            ]
-          },
-          {
-            "group": "编程开发",
-            "pages": [
-              "scenarios/coding/cline",
-              "scenarios/coding/roo-code",
-              "scenarios/coding/gemini-cli",
-              "scenarios/coding/claude-code",
-              "scenarios/coding/codex-cli",
-              "scenarios/coding/opencode",
-              "scenarios/coding/cursor"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "开发指南",
-        "groups": [
           {
             "group": "开发指南",
             "pages": [
-              "guides/best-practices",
-              "guides/rate-limits",
-              "guides/error-codes",
-              "guides/migration"
+              "models/claude",
+              "models/gpt",
+              "image-generation/gpt-image-2"
             ]
           },
           {
-            "group": "信任与安全",
+            "group": "接入教程",
             "pages": [
-              "trust/overview",
-              "trust/data-security",
-              "trust/compliance"
+              {
+                "group": "对话型 AI",
+                "pages": [
+                  "scenarios/chat/cherry-studio",
+                  "scenarios/chat/chatbox",
+                  "scenarios/chat/openwebui",
+                  "scenarios/chat/nextweb"
+                ]
+              },
+              {
+                "group": "编程开发",
+                "pages": [
+                  "scenarios/coding/claude-code",
+                  "scenarios/coding/codex-cli",
+                  "scenarios/coding/cline",
+                  "scenarios/coding/roo-code",
+                  "scenarios/coding/gemini-cli",
+                  "scenarios/coding/opencode",
+                  "scenarios/coding/cursor"
+                ]
+              },
+              {
+                "group": "AI Agent",
+                "pages": [
+                  "scenarios/agent/openclaw"
+                ]
+              }
             ]
-          }
-        ]
-      },
-      {
-        "tab": "API 参考",
-        "groups": [
+          },
           {
-            "group": "API 端点",
+            "group": "进阶玩法",
             "pages": [
-              "api-reference/overview",
-              "api-reference/chat-completions",
-              "api-reference/image-generation"
+              "guides/best-practices",
+              "guides/migration",
+              "guides/rate-limits",
+              "guides/error-codes"
             ]
-          }
-        ]
-      },
-      {
-        "tab": "常见问题",
-        "groups": [
+          },
           {
             "group": "常见问题",
             "pages": [
@@ -164,12 +126,22 @@
         ]
       },
       {
-        "tab": "最新公告",
+        "tab": "关于我们",
         "groups": [
           {
-            "group": "最新公告",
+            "group": "关于 SeeOneAPI",
             "pages": [
-              "changelog"
+              "about",
+              "trust/overview",
+              "trust/data-security",
+              "trust/compliance"
+            ]
+          },
+          {
+            "group": "条款与政策",
+            "pages": [
+              "legal/terms",
+              "legal/aup"
             ]
           }
         ]

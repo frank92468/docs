@@ -91,6 +91,17 @@ curl https://api.seeoneapi.com/v1/responses \
   Responses API 是 OpenAI 推出的新一代接口格式。如果你的工具链已经在使用 Responses API，可以直接对接；否则推荐使用上面的 Images API，兼容性更好。
 </Info>
 
+## 请求参数
+
+| 参数 | 类型 | 必填 | 默认值 | 说明 |
+|------|------|------|--------|------|
+| `model` | string | 是 | — | 固定为 `gpt-image-2` |
+| `prompt` | string | 是 | — | 图像描述，支持中英文 |
+| `n` | integer | 否 | 1 | 生成图片数量，1-4 |
+| `size` | string | 否 | `1024x1024` | 图片尺寸，详见下方[支持的分辨率](#支持的分辨率) |
+| `quality` | string | 否 | `auto` | 图片质量：`auto`、`high`、`medium`、`low` |
+| `response_format` | string | 否 | `url` | 返回格式：`url` 或 `b64_json` |
+
 ## 支持的分辨率
 
 | 尺寸 | 参数值 | 说明 |
@@ -140,6 +151,38 @@ with open("output.png", "wb") as f:
   建议生产环境使用 `b64_json` 格式，避免 URL 过期导致图片丢失。
 </Note>
 
+## 响应示例
+
+URL 格式（默认）：
+
+```json
+{
+  "created": 1716000000,
+  "data": [
+    {
+      "url": "https://...",
+      "revised_prompt": "模型优化后的提示词"
+    }
+  ]
+}
+```
+
+Base64 格式（`response_format: "b64_json"`）：
+
+```json
+{
+  "created": 1716000000,
+  "data": [
+    {
+      "b64_json": "iVBORw0KGgo...",
+      "revised_prompt": "模型优化后的提示词"
+    }
+  ]
+}
+```
+
+`revised_prompt` 字段会返回模型实际使用的优化后提示词，便于理解和改进提示词写法。
+
 ## 批量生成
 
 设置 `n` 参数一次生成多张图片（最多 4 张），从中挑选最满意的：
@@ -165,14 +208,3 @@ for i, img in enumerate(response.data):
 - `revised_prompt` 字段会返回模型实际使用的优化后提示词，便于理解和改进
 - 中文提示词可用，但英文提示词通常效果更精准
 - 具体定价请查看 [模型广场](https://www.seeoneapi.com/pricing)
-
-## 下一步
-
-<CardGroup cols={2}>
-  <Card title="参数详解" icon="sliders" href="/image-generation/parameters">
-    全部请求参数的详细说明
-  </Card>
-  <Card title="提示词技巧" icon="wand-magic-sparkles" href="/image-generation/best-practices">
-    写出更好的图像生成提示词
-  </Card>
-</CardGroup>
