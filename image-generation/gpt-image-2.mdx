@@ -1,5 +1,5 @@
 ---
-title: "gpt-image-2 图像生成"
+title: "gpt-image-2"
 description: "通过 SeeOneAPI 调用 gpt-image-2 与 gpt-image-2-4k，支持 Images API 直连与 Responses API 工具调用"
 ---
 
@@ -8,18 +8,18 @@ description: "通过 SeeOneAPI 调用 gpt-image-2 与 gpt-image-2-4k，支持 Im
 SeeOneAPI 提供两个图像生成模型，按需求选择：
 
 | 模型 ID | 速度 | 尺寸控制 | 支持端点 | 计费 |
-|---------|------|---------|---------|------|
-| `gpt-image-2` | 快 | 输出固定尺寸（约 1254×1254），传 `size` 被忽略 | 仅 Images API | 0.05 / 次 |
-| `gpt-image-2-4k` | 偏慢 | 可指定具体像素，支持 4K | Images API + Responses API | 0.06 / 次 |
+| --- | --- | --- | --- | --- |
+| `gpt-image-2` | 快 | 传 `size` 被忽略 | 仅 Images API | 0.05 / 次 |
+| `gpt-image-2-4k` | 偏慢 | 可指定具体像素，支持 4K | Images API \+ Responses API | 0.06 / 次 |
 
 <Note>
-简单判断：要快、对尺寸不挑 → 用 `gpt-image-2`；要指定精确像素、4K，或要让主模型参与扩写提示词 → 用 `gpt-image-2-4k`。两个模型 ID 不可混用，写错会调用失败。
+  简单判断：要快、对尺寸不挑 → 用 `gpt-image-2`；要指定精确像素、4K，或要让主模型参与扩写提示词 → 用 `gpt-image-2-4k`。两个模型 ID 不可混用，写错会调用失败。
 </Note>
 
 核心配置：
 
 | 项目 | 值 |
-|------|-----|
+| --- | --- |
 | Base URL | `https://api.seeoneapi.com/v1` |
 | API Key 环境变量 | `SEEONE_API_KEY` |
 | 调度主模型（Responses API） | `gpt-5.5` |
@@ -34,13 +34,14 @@ export SEEONE_API_KEY="你的 SeeOneAPI Key"
 
 ## gpt-image-2：快速生成
 
-适合对尺寸不挑、追求速度的场景。**仅支持 Images API**。传入 `size` 不会报错，但会被忽略，实际输出为模型固定尺寸（约 1254×1254），不受控制。需要精确尺寸或 4K，请用 `gpt-image-2-4k`；如需控制画面比例，可在提示词里描述（如 `a wide 16:9 landscape`、`a tall vertical portrait`）。
+适合对尺寸不挑、追求速度的场景。**仅支持 Images API**。传入 `size` 不会报错，但会被忽略，需要精确尺寸或 4K，请用 `gpt-image-2-4k`；如需控制画面比例，可在提示词里描述（如 `a wide 16:9 landscape`、`a tall vertical portrait`）。
 
 <Warning>
-走 Responses 端点不会报错，但只返回文本、不生成图片——请勿用 Responses 调 `gpt-image-2`，图像生成请用 Images API。（返回 200 容易被误判为成功，注意甄别。）
+  走 Responses 端点不会报错，但只返回文本、不生成图片——请勿用 Responses 调 `gpt-image-2`，图像生成请用 Images API。（返回 200 容易被误判为成功，注意甄别。）
 </Warning>
 
 <CodeGroup>
+
 ```bash cURL
 curl -sS "https://api.seeoneapi.com/v1/images/generations" \
   -H "Authorization: Bearer $SEEONE_API_KEY" \
@@ -88,10 +89,11 @@ const result = await client.images.generate({
 
 fs.writeFileSync("image.png", Buffer.from(result.data[0].b64_json, "base64"));
 ```
+
 </CodeGroup>
 
 <Tip>
-传入 `size` 不会报错，但会被忽略，实际输出为模型固定尺寸（约 1254×1254），不受控制。需要精确尺寸或 4K，请用 `gpt-image-2-4k`。
+  传入 `size` 不会报错，但会被忽略。需要精确尺寸或 4K，请用 `gpt-image-2-4k`。
 </Tip>
 
 ---
@@ -123,7 +125,7 @@ curl -sS "https://api.seeoneapi.com/v1/images/generations" \
 - 总像素不超过 `8,294,400`
 
 <Warning>
-不要把 4K 写成 `4096x4096`，会被拒绝报错（超过最长边 3840 限制）。4K 生成耗时较长，可先用较低画质出草稿确认方向，再提高质量。
+  不要把 4K 写成 `4096x4096`，会被拒绝报错（超过最长边 3840 限制）。4K 生成耗时较长，可先用较低画质出草稿确认方向，再提高质量。
 </Warning>
 
 ### Images API 编辑
@@ -131,6 +133,7 @@ curl -sS "https://api.seeoneapi.com/v1/images/generations" \
 使用 `/v1/images/edits`，以 `multipart/form-data` 上传图片，支持单图编辑和多参考图。编辑接口使用 `gpt-image-2-4k`。
 
 <CodeGroup>
+
 ```bash 单图编辑
 curl -sS "https://api.seeoneapi.com/v1/images/edits" \
   -H "Authorization: Bearer $SEEONE_API_KEY" \
@@ -153,10 +156,11 @@ curl -sS "https://api.seeoneapi.com/v1/images/edits" \
   -F "response_format=b64_json" \
   | jq -r '.data[0].b64_json' | base64 -d > reference-edit.png
 ```
+
 </CodeGroup>
 
 <Note>
-需要局部编辑时可传 `mask`，mask 应与第一张输入图尺寸一致并包含 alpha 通道；实际效果仍建议在提示词里明确说明要替换或保留的区域。
+  需要局部编辑时可传 `mask`，mask 应与第一张输入图尺寸一致并包含 alpha 通道；实际效果仍建议在提示词里明确说明要替换或保留的区域。
 </Note>
 
 ### Responses API 工具调用
@@ -175,6 +179,7 @@ curl -sS "https://api.seeoneapi.com/v1/images/edits" \
 ```
 
 <CodeGroup>
+
 ```python Python
 import base64, os
 from openai import OpenAI
@@ -221,10 +226,11 @@ for await (const event of stream) {
 }
 if (imageBase64) fs.writeFileSync("image-4k.png", Buffer.from(imageBase64, "base64"));
 ```
+
 </CodeGroup>
 
 <Tip>
-图像生成比文本响应耗时更长，建议保留 `stream: true`：可拿到生成进度事件，并在同一条连接里取到最终图片，无需额外轮询和超时恢复。
+  图像生成比文本响应耗时更长，建议保留 `stream: true`：可拿到生成进度事件，并在同一条连接里取到最终图片，无需额外轮询和超时恢复。
 </Tip>
 
 如果产品按钮固定是"生成图片"，可用 `tool_choice` 强制走图像工具：
@@ -250,7 +256,7 @@ if (imageBase64) fs.writeFileSync("image-4k.png", Buffer.from(imageBase64, "base
 - **避免项**：不要水印、不要文字、不要变形
 
 <Note>
-如果图片里需要准确文字，建议把文字和图片分开：图像模型生成无字主视觉，文字排版交给前端、Canvas 或设计软件，可控性更高。
+  如果图片里需要准确文字，建议把文字和图片分开：图像模型生成无字主视觉，文字排版交给前端、Canvas 或设计软件，可控性更高。
 </Note>
 
 ## 注意事项
@@ -258,5 +264,4 @@ if (imageBase64) fs.writeFileSync("image-4k.png", Buffer.from(imageBase64, "base
 - **返回格式**：建议固定 `response_format: "b64_json"`，输出默认 png。需要 URL，推荐在后端解码后上传对象存储/CDN，再返回自有 URL。
 - **4K 超时**：4K 等大尺寸生成耗时长，若经 Cloudflare 代理可能因 100s 超时返回 524，建议图像端点使用 DNS-only 模式绕过代理。
 - **存储**：生产环境建议把 base64 解码后上传对象存储/CDN，数据库只存图片 URL、提示词、模型、尺寸和状态。
-- **模型分组隔离**：每个令牌只能调用其所在分组的模型，跨分组调用会返回 `503`「无可用渠道」。Responses 工作流需要主模型 `gpt-5.5` 和 `gpt-image-2-4k` 在同一分组。
 - **计费**：`gpt-image-2` 按 0.05/次，`gpt-image-2-4k` 按 0.06/次，均按成功生成次数计费。
